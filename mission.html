@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mission — SAS Special Operations Group</title>
+<link href="styles.css" rel="stylesheet">
+</head>
+<body>
+<div class="site">
+  <header class="site-header">
+    <div class="brand"><div class="logo">SAS</div><div><div style="font-size:12px;color:#666">Special Operations</div><div style="font-size:13px">SAS Special Operations Group</div></div></div>
+    <nav class="main-nav" aria-label="Main navigation">
+      <a href="index.html">Home</a>
+      <a href="mission.html" aria-current="page">Mission</a>
+      <a href="operations.html">Operations</a>
+      <a href="highlights.html">Highlights</a>
+      <a href="apply.html">Join</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn small join" href="apply.html">Apply</a>
+      <button class="hamburger" id="hambtn" aria-label="Open menu">☰</button>
+    </div>
+  </header>
+
+  <div class="page-hero reveal" role="region" aria-labelledby="mission-title">
+    <div>
+      <div id="mission-title" class="title">Our Mission</div>
+      <div class="subtitle">Disciplined capability, trained for complex environments.</div>
+    </div>
+    <div style="margin-left:auto"><a class="btn ghost small" href="operations.html">Operations</a></div>
+  </div>
+
+  <div class="container">
+    <main class="article reveal" role="main" aria-labelledby="mission-main">
+      <h2 id="mission-main">What we do</h2>
+      <p class="muted">The SAS conducts specialist operations, advanced training and unit development to maintain operational readiness across BRM5 theatres.</p>
+
+      <section style="margin-top:18px">
+        <h3 class="caps">Principles</h3>
+        <ul style="padding-left:18px">
+          <li><strong>Discipline:</strong> rigorous standards in planning and execution.</li>
+          <li><strong>Precision:</strong> measured, intelligence-led action.</li>
+          <li><strong>Adaptability:</strong> training for diverse environments and contingencies.</li>
+        </ul>
+      </section>
+
+      <section style="margin-top:18px">
+        <h3 class="caps">Training</h3>
+        <p>Training cycles are structured around mission profiles: urban, mountain, maritime, and arid environments. Emphasis is placed on live-fire, navigation, medical, and communications drills.</p>
+      </section>
+
+      <section style="margin-top:18px">
+        <h3 class="caps">Ethos</h3>
+        <p>Professionalism, accountability, and continuous improvement underpin all activity.</p>
+      </section>
+    </main>
+
+    <aside class="aside reveal">
+      <div class="card">
+        <h4>Training calendar</h4>
+        <p class="muted">Quarterly cycles: Basic, Advanced, Joint exercises. Contact training cell for details.</p>
+      </div>
+
+      <div class="card" style="margin-top:12px">
+        <h4>Doctrine</h4>
+        <p class="muted">Doctrine documents are maintained internally. Public summaries are available on request to authorised channels.</p>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="site-footer">© 2026 SAS Special Operations Group • Contact: support@sas-brm5.org</footer>
+</div>
+
+<script>
+  // Mobile drawer + reveal (same as operations)
+  const hambtn = document.getElementById('hambtn');
+  const drawer = document.createElement('div');
+  drawer.className = 'mobile-drawer';
+  drawer.innerHTML = '<button id="closeDrawer" style="border:0;background:transparent;padding:8px;margin-bottom:12px;font-weight:800">Close ✕</button><a href="index.html">Home</a><a href="mission.html">Mission</a><a href="operations.html">Operations</a><a href="highlights.html">Highlights</a><a href="apply.html">Join</a>';
+  document.body.appendChild(drawer);
+  hambtn && hambtn.addEventListener('click', ()=>{ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); drawer.querySelector('a')?.focus(); });
+  document.getElementById('closeDrawer')?.addEventListener('click', ()=>{ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); hambtn?.focus(); });
+
+  const reveals = document.querySelectorAll('.reveal');
+  const revealOnScroll = ()=>{ const top = window.innerHeight * 0.85; reveals.forEach(el=>{ const r = el.getBoundingClientRect(); if(r.top < top) el.classList.add('visible'); }); };
+  window.addEventListener('scroll', revealOnScroll, {passive:true}); window.addEventListener('load', revealOnScroll);
+</script>
+</body>
+</html>

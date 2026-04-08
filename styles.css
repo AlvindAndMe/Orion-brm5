@@ -513,7 +513,7 @@ body {
 }
 
 .SAS-logo {
-  height: 60px;           /* Adjust this value to make it smaller/bigger */
+  height: 80px;           /* Adjust this value to make it smaller/bigger */
   width: auto;            /* Maintains aspect ratio */
   max-width: 150px;       /* Prevents it from getting too wide */
   object-fit: contain;    /* Ensures image stays crisp */

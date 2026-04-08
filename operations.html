@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Operations | SAS Special Operations Group</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section section-alt">
+      <div style="max-width: var(--max-width); margin: 0 auto; padding: 0 2rem;">
+        <h1 class="section-title">Operations</h1>
+        <p class="section-subtitle">The Special Operations Group conducts four primary lines of operation, each requiring distinct capabilities and training pathways.</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="card-grid">
+        <div class="card">
+          <h2 class="card-title">Direct Action</h2>
+          <p>Short-duration strikes and other small-scale offensive actions conducted as a special operation in hostile, denied, or politically sensitive environments. These operations differ from conventional offensive actions in the level of physical and political risk, the degree of discrimination in the use of force, and the requirement for precise application of force.</p>
+          <ul style="margin-top: 1.5rem; padding-left: 1.5rem; color: var(--color-text-light);">
+            <li style="margin-bottom: 0.5rem;">High-value target acquisition</li>
+            <li style="margin-bottom: 0.5rem;">Infrastructure interdiction</li>
+            <li style="margin-bottom: 0.5rem;">Hostage rescue operations</li>
+            <li>Precision raids on fortified positions</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Special Reconnaissance</h2>
+          <p>Reconnaissance and surveillance actions conducted at depth to collect or verify information of strategic or operational significance. These operations are characterised by clandestine insertion, extended duration, and the requirement to avoid detection rather than engage in combat.</p>
+          <ul style="margin-top: 1.5rem; padding-left: 1.5rem; color: var(--color-text-light);">
+            <li style="margin-bottom: 0.5rem;">Covert observation posts</li>
+            <li style="margin-bottom: 0.5rem;">Environmental preparation</li>
+            <li style="margin-bottom: 0.5rem;">Battle damage assessment</li>
+            <li>Strategic intelligence collection</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Support & Enablement</h2>
+          <p>Training, advising, and operating alongside partner forces to build indigenous capacity. This includes the selection, training, and operational mentoring of foreign military units, as well as the provision of force protection and tactical leadership during combined operations.</p>
+          <ul style="margin-top: 1.5rem; padding-left: 1.5rem; color: var(--color-text-light);">
+            <li style="margin-bottom: 0.5rem;">Partner force training</li>
+            <li style="margin-bottom: 0.5rem;">Tactical advice and liaison</li>
+            <li style="margin-bottom: 0.5rem;">Combined operations leadership</li>
+            <li>Capability development</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Aviation Operations</h2>
+          <p>The integration of rotary-wing assets to provide tactical mobility, precision insertion, and logistical support to special operations. This includes air assault operations, fast-rope deployment, and the coordination of close air support in austere environments.</p>
+          <ul style="margin-top: 1.5rem; padding-left: 1.5rem; color: var(--color-text-light);">
+            <li style="margin-bottom: 0.5rem;">Air assault raids</li>
+            <li style="margin-bottom: 0.5rem;">Tactical air mobility</li>
+            <li style="margin-bottom: 0.5rem;">Rotary wing insertion/extraction</li>
+            <li>Casualty evacuation</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card mt-2">
+        <h2 class="section-title">Operational Tempo</h2>
+        <p>The Group maintains a continuous cycle of readiness, training, and deployment. While specific operations are classified, the unit typically conducts no-notice deployment exercises weekly and maintains a four-hour recall capability for counter-terrorism response. Overseas training deployments occur monthly to maintain currency in varied terrain and climate conditions.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
+  </footer>
+
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <h2 class="modal-title">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      <button class="btn btn-primary" id="copyBtn" style="margin-right: 1rem;">Copy Template</button>
+      <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2;">Open Discord</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

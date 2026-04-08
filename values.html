@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Values | SAS Special Operations Group</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <h1 class="section-title">Our Values</h1>
+      <p class="section-subtitle">These principles guide our conduct on and off operations. They are non-negotiable and form the foundation of our operational effectiveness.</p>
+
+      <div class="card">
+        <ul class="list-styled" style="font-size: 1.125rem;">
+          <li style="margin-bottom: 1.5rem;">
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 0.5rem;">Discipline</strong>
+            <span>Unwavering self-control and adherence to standards regardless of circumstances. We maintain our equipment, physical fitness, and skills to the highest standard without external supervision. Discipline ensures we function effectively when exhausted, stressed, or isolated.</span>
+          </li>
+          <li style="margin-bottom: 1.5rem;">
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 0.5rem;">Courage</strong>
+            <span>Both moral and physical courage are required. We must be willing to accept risk to accomplish the mission, but also willing to challenge orders that are unethical or tactically unsound. Courage means doing what is right, not merely what is expedient.</span>
+          </li>
+          <li style="margin-bottom: 1.5rem;">
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 0.5rem;">Respect for Others</strong>
+            <span>We treat our teammates, partner forces, and the local population with dignity. Respect builds the trust necessary for effective teamwork and successful partnerships. Arrogance and disrespect undermine operational security and mission success.</span>
+          </li>
+          <li style="margin-bottom: 1.5rem;">
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 0.5rem;">Integrity</strong>
+            <span>Honesty and ethical conduct without compromise. We do not falsify reports, cut corners on training, or misrepresent our capabilities. Integrity ensures that commanders can trust our assessments and that teammates can trust our word absolutely.</span>
+          </li>
+          <li>
+            <strong style="color: var(--color-primary); display: block; margin-bottom: 0.5rem;">Selfless Commitment</strong>
+            <span>The team and the mission take precedence over personal comfort, safety, or advancement. We serve something larger than ourselves. This commitment extends to supporting our teammates and ensuring no one is left behind, physically or metaphorically.</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="card mt-2" style="background-color: var(--color-primary); color: var(--color-white); border: none;">
+        <h2 class="card-title" style="color: var(--color-white);">Application</h2>
+        <p>These values are not abstract concepts but practical standards applied daily. An operator who compromises on equipment maintenance demonstrates lack of discipline. One who belittles a teammate shows disrespect. These behaviours are corrected immediately because they threaten the trust upon which our operations depend.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
+  </footer>
+
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <h2 class="modal-title">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      <button class="btn btn-primary" id="copyBtn" style="margin-right: 1rem;">Copy Template</button>
+      <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2;">Open Discord</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

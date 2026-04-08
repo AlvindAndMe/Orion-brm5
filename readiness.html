@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Readiness | SAS Special Operations Group</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <h1 class="section-title">Constant Readiness</h1>
+      <p class="section-subtitle">The Special Operations Group maintains the highest state of readiness of any unit within the BRM5 structure.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h2 class="card-title">Alert Status</h2>
+          <p>The Counter-Terrorism team maintains a 24-hour recall capability, with operators required to respond to the assembly point within four hours of notification. This state of readiness is maintained 365 days per year, regardless of other commitments. Sabre Squadrons rotate through standby periods where they maintain a 24-hour readiness to deploy overseas.</p>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Equipment Preparedness</h2>
+          <p>Every operator maintains a "ready bag" containing mission-essential equipment pre-packed and inspected weekly. Weapons are zeroed and maintained at all times. Vehicles and aviation assets allocated to the Group are maintained at immediate readiness, with pre-flight and pre-drive checks conducted daily.</p>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Training Continuity</h2>
+          <p>Readiness is maintained through constant training. Even when not deployed, operators train daily in marksmanship, physical fitness, and tactical drills. This ensures that skills remain sharp and that new tactics are integrated immediately into standard operating procedures. A week without training is considered a week of degradation.</p>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">Strategic Mobility</h2>
+          <p>The Group maintains agreements with aviation and maritime assets to ensure rapid strategic movement. Pre-planned load plans allow equipment and personnel to be moved from barracks to departure point within hours. This mobility ensures we can respond to emerging crises before they develop into strategic threats.</p>
+        </div>
+      </div>
+
+      <div class="card mt-2">
+        <h2 class="card-title">The Cost of Readiness</h2>
+        <p>Maintaining this state of constant readiness imposes significant demands on our operators and their families. It requires sacrifice, flexibility, and the acceptance of uncertainty. However, the operational environment does not allow for preparation time. Threats emerge without warning, and our value lies in our ability to respond immediately and effectively. This is the burden of special operations.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
+  </footer>
+
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <h2 class="modal-title">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      <button class="btn btn-primary" id="copyBtn" style="margin-right: 1rem;">Copy Template</button>
+      <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2;">Open Discord</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join | SAS Special Operations Group</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <h1 class="section-title">Join the Group</h1>
+      <p class="section-subtitle">Selection is open to all BRM5 players who meet the standards. The process is demanding but fair.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <h2 class="card-title">Requirements</h2>
+          <ul style="padding-left: 1.5rem; line-height: 2;">
+            <li>Minimum age: 16 years</li>
+            <li>Working microphone and Discord</li>
+            <li>English language proficiency</li>
+            <li>Minimum 4 hours weekly availability</li>
+            <li>Mental maturity and discipline</li>
+            <li>No active bans from BRM5</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h2 class="card-title">The Process</h2>
+          <ol style="padding-left: 1.5rem; line-height: 2;">
+            <li><strong>Application:</strong> Submit via Discord using the template provided</li>
+            <li><strong>Interview:</strong> Voice interview with recruitment staff</li>
+            <li><strong>Selection:</strong> Four-day assessment of skills and endurance</li>
+            <li><strong>Training:</strong> Six-week foundation course</li>
+            <li><strong>Assignment:</strong> Posted to Sabre Squadron</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="card mt-2" style="text-align: center; padding: 3rem;">
+        <h2 class="section-title">Ready to Commit?</h2>
+        <p style="font-size: 1.125rem; margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">Click the button below to open the recruitment modal. Copy the application template and join our Discord to submit your entry.</p>
+        <button class="btn btn-primary btn-large" data-open-modal>Begin Application</button>
+      </div>
+
+      <div class="card mt-2">
+        <h2 class="card-title">What to Expect</h2>
+        <p>Selection is designed to identify individuals who possess the mental resilience and physical stamina required for special operations. You will be tested on navigation, endurance, tactical decision-making, and teamwork. The process is intentionally stressful to simulate operational pressure. Not everyone passes, and passing does not guarantee acceptance; we assess whether you are the right fit for our culture and mission.</p>
+        <p style="margin-top: 1rem;">If you believe you meet the standard, we encourage you to apply. Whether you succeed or fail, you will learn something about your capabilities. Many candidates report that Selection, even when unsuccessful, was a valuable experience that improved their performance in other areas of BRM5.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
+  </footer>
+
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <h2 class="modal-title">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      <button class="btn btn-primary" id="copyBtn" style="margin-right: 1rem;">Copy Template</button>
+      <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2;">Open Discord</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

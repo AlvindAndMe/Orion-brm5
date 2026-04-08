@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Training | SAS Special Operations Group</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <h1 class="section-title">Training Pipeline</h1>
+      <p class="section-subtitle">The path to joining the Special Operations Group is demanding by design. Our training pipeline ensures that only those with the requisite physical stamina, mental resilience, and moral character earn the right to wear the beige beret.</p>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 1</div>
+          <h3 class="timeline-title">Selection</h3>
+          <p>A four-day assessment of physical endurance, navigation skills, and mental aptitude. Candidates undergo progressively demanding tasks including weighted marches across difficult terrain, navigation exercises under time pressure, and sleep deprivation scenarios. This phase tests individual motivation and the ability to make rational decisions while exhausted.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 2</div>
+          <h3 class="timeline-title">Foundation Training</h3>
+          <p>Successful candidates enter a six-week foundation course covering basic special forces tactics, weapons handling, communications, and medical training. This phase transitions the candidate from an individual to a team member, emphasising small unit tactics, fire and manoeuvre, and the basics of close quarter battle.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 3</div>
+          <h3 class="timeline-title">Specialisation</h3>
+          <p>Operators select a specific role: Air Troop, Mobility Troop, Mountain Troop, or Boat Troop. Each pathway provides intensive technical training in the relevant insertion method and environment. Concurrently, all operators undergo counter-terrorism training including dynamic entry, hostage rescue, and precision shooting.</p>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-date">Phase 4</div>
+          <h3 class="timeline-title">Continuation Training</h3>
+          <p>Upon assignment to a Sabre Squadron, operators participate in continuous training cycles. This includes live-fire exercises, joint training with partner units, and language training. The learning never stops; every operation is debriefed in detail, and lessons are incorporated immediately into standard operating procedures.</p>
+        </div>
+      </div>
+
+      <div class="card mt-2">
+        <h2 class="card-title">Standards</h2>
+        <p>We do not operate on a quota system. Standards are absolute, not relative. If no candidates meet the standard during a selection course, no candidates pass. If multiple candidates meet the standard, multiple candidates pass. The Group requires quality, not quantity. The operational environment will not forgive mediocrity; neither will our training.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
+  </footer>
+
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <h2 class="modal-title">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      <button class="btn btn-primary" id="copyBtn" style="margin-right: 1rem;">Copy Template</button>
+      <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2;">Open Discord</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

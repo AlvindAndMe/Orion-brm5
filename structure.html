@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Structure | SAS Special Operations Group</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <h1 class="section-title">Unit Structure</h1>
+      <p class="section-subtitle">The Special Operations Group is structured to provide maximum operational flexibility while maintaining tight command and control.</p>
+
+      <div class="card">
+        <h2 class="card-title">Headquarters Element</h2>
+        <p>The HQ provides command, control, communications, and intelligence support to deployed squadrons. This includes operations planning, signals intelligence, logistical coordination, and medical support. The Headquarters ensures that operational detachments receive timely, accurate intelligence and that administrative support does not distract from the operational focus of the Sabre Squadrons.</p>
+      </div>
+
+      <div class="card" style="margin-top: 2rem;">
+        <h2 class="card-title">Sabre Squadrons</h2>
+        <p>The operational heart of the Group consists of three Sabre Squadrons: A, B, and C. Each Squadron rotates through a cycle of Standby (immediate readiness), Training (skills maintenance and development), and Operations (deployed or preparing for deployment). This cycle ensures that at least one Squadron is available for immediate tasking at all times.</p>
+        
+        <div style="margin-top: 2rem;">
+          <h3 style="font-size: 1.1rem; margin-bottom: 1rem; color: var(--color-primary);">Troop Structure</h3>
+          <p>Each Sabre Squadron consists of four specialist troops:</p>
+          <ul style="margin-top: 1rem; padding-left: 1.5rem; line-height: 2;">
+            <li><strong>Air Troop:</strong> Specialises in parachute insertion, both static line and military freefall, and airfield seizure.</li>
+            <li><strong>Mobility Troop:</strong> Focuses on vehicle-based operations using modified military vehicles for long-range reconnaissance and direct action.</li>
+            <li><strong>Boat Troop:</strong> Conducts maritime operations including submarine insertion, small boat operations, and beach reconnaissance.</li>
+            <li><strong>Mountain Troop:</strong> Operates in arctic and mountain environments, specialising in cold weather warfare and technical climbing.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 2rem;">
+        <h2 class="card-title">Counter-Terrorism Team</h2>
+        <p>A dedicated sub-unit maintains constant readiness for counter-terrorism operations. This team trains specifically in aircraft intervention, building entry, and hostage rescue, maintaining a higher state of readiness than the remainder of the unit. While drawn from the Sabre Squadrons, CT team members undergo additional selection and training in close quarter battle and precision shooting.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
+  </footer>
+
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <h2 class="modal-title">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      <button class="btn btn-primary" id="copyBtn" style="margin-right: 1rem;">Copy Template</button>
+      <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2;">Open Discord</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

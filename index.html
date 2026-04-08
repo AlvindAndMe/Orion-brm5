@@ -1,468 +1,120 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>SAS Special Operations Group</title>
-<meta name="description" content="SAS Special Operations Group - operational readiness, specialist training and recruitment." />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-
-<style>
-  :root{
-    --black:#0b0b0b;
-    --white:#ffffff;
-    --muted:#f5f5f5;
-    --accent:#FCD116;
-    --max-width:1200px;
-    --gap:24px;
-    --radius:4px;
-    --ease:cubic-bezier(.2,.9,.3,1);
-  }
-
-  *{box-sizing:border-box}
-  html,body{height:100%}
-  body{
-    margin:0;
-    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
-    color:var(--black);
-    background:var(--muted);
-    line-height:1.45;
-  }
-  a{color:inherit;text-decoration:none}
-  img{display:block;max-width:100%}
-
-  .site { max-width:var(--max-width); margin:0 auto; padding:28px; }
-
-  /* HEADER */
-  header.site-header{
-    display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0;
-  }
-  .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:0.6px; text-transform:uppercase; font-size:14px; }
-  .brand .logo { width:40px; height:40px; background:#111; display:grid; place-items:center; color:var(--white); font-weight:700; border-radius:2px; }
-  nav.main-nav { display:flex; gap:18px; align-items:center; }
-  nav.main-nav a { padding:8px 10px; font-weight:600; font-size:14px; color:#111; }
-  .nav-actions { display:flex; gap:12px; align-items:center; }
-
-  /* HAMBURGER ONLY ON MOBILE */
-  .hamburger { display:none; width:40px; height:40px; border:1px solid #ddd; background:var(--white); align-items:center; justify-content:center; cursor:pointer; }
-
-  @media (max-width:720px){
-    nav.main-nav { display:none; }
-    .hamburger { display:flex; }
-  }
-
-  /* HERO */
-  .hero {
-    display:grid;
-    grid-template-columns: 1fr 420px;
-    align-items:center;
-    gap:24px;
-    min-height:520px;
-    background:#111;
-    border-radius:6px;
-    overflow:hidden;
-    margin:24px 0;
-  }
-
-  .hero-media {
-    min-height:520px;
-  }
-
-  .hero-media img {
-    width:100%;
-    height:100%;
-    object-fit:cover;
-  }
-
-  .hero-panel {
-    background:rgba(0,0,0,0.65);
-    padding:32px;
-    border-radius:6px;
-    backdrop-filter:blur(4px);
-    color:white;
-  }
-
-  .hero h1{ margin:0 0 12px 0; font-size:36px; font-weight:800; }
-  .hero p.lead{ margin:0 0 20px 0; color:rgba(255,255,255,0.95); font-size:16px; }
-
-  .hero-buttons{ display:flex; gap:12px; margin-top:8px; }
-
-  .btn {
-    display:inline-flex; align-items:center; gap:10px;
-    padding:10px 18px;
-    border:2px solid var(--black);
-    background:var(--white);
-    color:var(--black);
-    font-weight:700;
-    font-size:14px;
-    border-radius:var(--radius);
-    transition:all .18s var(--ease);
-  }
-  .btn.join:hover { background:var(--accent); }
-  .btn.ghost { background:transparent; border-color:rgba(255,255,255,0.2); color:white; }
-
-  @media (max-width:720px){
-    .hero {
-      grid-template-columns:1fr;
-      height:auto;
-      padding-bottom:24px;
-    }
-    .hero-panel { padding:20px; }
-  }
-
-  /* MOBILE DRAWER */
-  .mobile-drawer {
-    position:fixed; right:0; top:0;
-    height:100vh; width:320px;
-    background:white;
-    box-shadow:-12px 0 40px rgba(0,0,0,0.12);
-    transform:translateX(110%);
-    transition:transform .28s var(--ease);
-    z-index:60;
-    padding:24px;
-    display:flex; flex-direction:column; gap:12px;
-  }
-  .mobile-drawer.open { transform:translateX(0); }
-  .mobile-drawer a { padding:12px 0; border-bottom:1px solid #eee; font-weight:700; }
-
-  /* SECTIONS */
-  section { margin:48px 0; }
-  .section-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
-  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
-
-  @media (max-width:1000px){ .grid-4 { grid-template-columns:repeat(2,1fr); } }
-  @media (max-width:720px){ .grid-4 { grid-template-columns:1fr; } }
-
-  .card {
-    background:white;
-    border:1px solid #e6e6e6;
-    padding:18px;
-    border-radius:6px;
-    display:flex; flex-direction:column; gap:12px;
-    transition:transform .18s var(--ease), box-shadow .18s var(--ease);
-  }
-  .card:hover { transform:translateY(-6px); box-shadow:0 10px 30px rgba(0,0,0,0.08); }
-
-  .card-icon {
-    width:44px; height:44px;
-    display:grid; place-items:center;
-    background:#111; color:white;
-    border-radius:4px;
-  }
-
-  .caps { text-transform:uppercase; font-weight:700; font-size:12px; color:#222; }
-  .muted { color:#777; font-size:14px; }
-
-  /* JOIN STRIP */
-  .join-strip {
-    display:flex; justify-content:space-between; align-items:center;
-    background:#111; color:white;
-    padding:22px;
-    border-radius:6px;
-  }
-
-  /* OVERLAY MODAL */
-  .overlay {
-    position:fixed; inset:0;
-    display:none;
-    align-items:center; justify-content:center;
-    background:rgba(0,0,0,0.6);
-    z-index:120;
-    padding:24px;
-  }
-  .overlay.open { display:flex; }
-
-  .modal {
-    width:100%; max-width:720px;
-    background:white;
-    border-radius:8px;
-    padding:20px;
-    box-shadow:0 20px 60px rgba(0,0,0,0.3);
-  }
-
-  .copybox {
-    width:100%;
-    padding:12px;
-    border:1px solid #e6e6e6;
-    border-radius:6px;
-    background:#fafafa;
-    font-family:monospace;
-    font-size:13px;
-    color:#111;
-    white-space:pre-wrap;
-  }
-
-  footer.site-footer { text-align:center; padding:20px 0; color:#666; }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | SAS Special Operations Group</title>
+  <meta name="description" content="The Special Air Service Special Operations Group - Elite special forces unit for Blackhawk Rescue Mission 5.">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="site">
-
-  <!-- HEADER -->
-  <header class="site-header">
-    <div class="brand">
-      <div class="logo">SAS</div>
-      <div>
-        <div style="font-size:12px;color:#666">Special Operations</div>
-        <div style="font-size:13px">SAS Special Operations Group</div>
-      </div>
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
     </div>
-
-    <nav class="main-nav">
-      <a href="#mission">Mission</a>
-      <a href="#operations">Operations</a>
-      <a href="#join">Join</a>
-    </nav>
-
-    <div class="nav-actions">
-      <button class="btn join" id="joinTopBtn">Join</button>
-      <button class="hamburger" id="hambtn">☰</button>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
     </div>
   </header>
 
-  <!-- MOBILE DRAWER -->
-  <nav class="mobile-drawer" id="drawer">
-    <button id="closeDrawer" style="border:0;background:none;font-weight:800;text-align:left">Close ✕</button>
-    <a href="#mission">Mission</a>
-    <a href="#operations">Operations</a>
-    <a href="#join" id="drawerJoin">Join</a>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-media">
-      <img src="./hero.png" alt="SAS operator in field">
-    </div>
-
-    <div class="hero-panel">
-      <h1>SPECIAL AIR SERVICE</h1>
-      <p class="lead">Elite readiness for the most demanding BRM5 operations. Our operators train to move fast, strike clean, and adapt instantly to changing conditions. Whether in dense urban terrain or remote mountain ranges, the SAS stands ready to execute missions with precision and discipline.</p>
-
-      <div class="hero-buttons">
-        <a class="btn join" id="heroJoin">Join SAS</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- MISSION -->
-  <section id="mission">
-    <div class="section-head">
-      <div>
-        <div class="caps">Our Mission</div>
-        <h2>What we do</h2>
-      </div>
-      <div class="muted">Who dares wins.</div>
-    </div>
-
-    <p>The SAS Special Operations Group exists to provide a rapid response force that can operate across every environment found in BRM5. Our purpose is clear: deliver precision, discipline, and adaptability in situations where failure is not an option.</p>
-
-    <p>We specialize in missions that require stealth, coordination, and technical skill. Whether we are conducting reconnaissance deep behind enemy lines or executing coordinated raids in contested zones, our operators are trained to maintain initiative under pressure and complete objectives with minimal footprint.</p>
-
-    <p>Our mission is built on three core principles:</p>
-
-    <ul>
-      <li><strong>Precision</strong> - Every action is deliberate.</li>
-      <li><strong>Discipline</strong> - Standards are consistent and enforced.</li>
-      <li><strong>Adaptability</strong> - No terrain is too hostile and no scenario is too complex.</li>
-    </ul>
-
-    <p>We train to move with intent, strike with accuracy, and operate with a level of professionalism that sets the standard for all units in the field.</p>
-  </section>
-
-  <!-- OPERATIONS -->
-  <section id="operations">
-    <div class="section-head">
-      <div>
-        <div class="caps">Operations</div>
-        <h2>How we operate</h2>
-      </div>
-    </div>
-
-    <div class="grid-4">
-      <article class="card">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div class="card-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-          </div>
-          <div>
-            <h3>Assault Operations</h3>
-            <p class="muted">Direct action, CQB, and precision raids.</p>
-          </div>
+  <main>
+    <section class="hero">
+      <div class="hero-container">
+        <img src="https://placehold.co/800x600/2a2a2a/ffffff?text=Special+Forces+Operator" alt="SAS Operator conducting operations" class="hero-image">
+        <div class="hero-content">
+          <h1 class="hero-title">Special Air Service - Special Operations Group</h1>
+          <p class="hero-subtitle">Elite special forces for Blackhawk Rescue Mission 5. Conducting counter-terrorism, special reconnaissance, and direct action operations with precision and discretion.</p>
+          <button class="btn btn-primary btn-large" data-open-modal>Begin Application</button>
         </div>
-        <p>Assault teams are trained for direct action in high risk environments. Operators specialize in close quarters battle, dynamic entry, and rapid target acquisition. Missions include hostage rescue, high value target capture, and disruption of enemy infrastructure. We emphasize coordination, speed, and controlled aggression.</p>
-      </article>
+      </div>
+    </section>
 
-      <article class="card">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div class="card-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16 8 12 12 8 16 16 8"></polygon></svg>
-          </div>
-          <div>
-            <h3>Reconnaissance</h3>
-            <p class="muted">Long range patrols and intelligence gathering.</p>
-          </div>
-        </div>
-        <p>Recon teams conduct long range patrols, covert observation, and intelligence gathering. These missions often require extended periods of isolation, stealth movement, and precise reporting. Operators are trained in navigation, camouflage, surveillance equipment, and silent communication.</p>
-      </article>
-
-      <article class="card">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div class="card-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"></path></svg>
-          </div>
-          <div>
-            <h3>Support</h3>
-            <p class="muted">Logistics, medical, and tactical coordination.</p>
-          </div>
-        </div>
-        <p>Support elements ensure that every operation can be sustained from start to finish. This includes logistics, medical response, communications, and tactical coordination. Our medics stabilize casualties under fire. Our logistics teams maintain supply lines in unpredictable terrain.</p>
-      </article>
-
-      <article class="card">
-        <div style="display:flex;gap:12px;align-items:center">
-          <div class="card-icon">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M2.5 19.5L21 12 2.5 4.5 2.5 10l13 2-13 2z"></path></svg>
-          </div>
-          <div>
-            <h3>Aviation</h3>
-            <p class="muted">Transport, CAS, and aerial recon.</p>
-          </div>
-        </div>
-        <p>Aviation assets provide mobility, overwatch, and fire support. From insertion and extraction to close air support and aerial reconnaissance, our pilots operate in tight coordination with ground teams. Aviation extends our reach and increases our tempo.</p>
-      </article>
-    </div>
-  </section>
-
-  <!-- JOIN -->
-  <section id="join">
-    <div class="join-strip">
-      <div>
-        <div class="caps">Recruitment</div>
-        <h3>Join the SAS</h3>
-        <p class="muted">Service eligibility criteria and next steps for applicants.</p>
+    <section class="section">
+      <div class="card">
+        <h2 class="section-title">Our Mission</h2>
+        <p class="lead">The Special Operations Group maintains a constant state of readiness to deploy at immediate notice anywhere within the BRM5 theatre. We conduct unilateral special operations in support of strategic objectives, providing the Commander with capabilities that do not exist elsewhere.</p>
+        <p style="margin-top: 1rem;">Our approach combines ruthless professionalism with tactical innovation. We operate in small teams, relying on skill, speed, and surprise rather than brute force. Every operator maintains the highest standards of physical fitness, marksmanship, and decision-making under pressure.</p>
+        <a href="mission.html" class="btn btn-primary mt-2">Read Full Mission Statement</a>
       </div>
 
-      <div style="display:flex;gap:12px;align-items:center">
-        <a class="btn join" id="applyBtn" target="_blank" rel="noopener">Apply</a>
-        <button class="btn ghost" id="contactBtn">Contact</button>
+      <h2 class="section-title" style="margin-top: 4rem; margin-bottom: 2rem;">Core Capabilities</h2>
+      <div class="card-grid">
+        <div class="card">
+          <h3 class="card-title">Direct Action</h3>
+          <p>Precision raids, hostage rescue, and high-value target acquisition conducted with surgical accuracy in complex environments.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Special Reconnaissance</h3>
+          <p>Covert observation, environmental preparation, and intelligence gathering deep within denied territories.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Counter-Terrorism</h3>
+          <p>Rapid response to terrorist incidents, including aircraft and building intervention, IED disposal, and threat neutralisation.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Aviation Operations</h3>
+          <p>Air assault deployment, tactical airlift coordination, and rotary wing insertion/extraction capabilities.</p>
+        </div>
       </div>
-    </div>
+    </section>
 
-    <p style="margin-top:18px;">Recruitment into the SAS is selective by design. We look for individuals who demonstrate discipline, initiative, and the willingness to push beyond personal limits. Applicants must be prepared for physical demands, mental discipline, team integration, and operational readiness. All applications are handled inside our Discord server.</p>
-  </section>
+    <section class="cta-strip">
+      <div class="max-width" style="max-width: 800px; margin: 0 auto;">
+        <h2 class="cta-strip-title">Ready to Serve?</h2>
+        <p class="cta-strip-text">Selection is open to all BRM5 personnel who meet the physical and mental standards. No previous special forces experience required.</p>
+        <button class="btn btn-primary btn-large" data-open-modal>Start Your Application</button>
+      </div>
+    </section>
+  </main>
 
-  <!-- FOOTER -->
-  <footer class="site-footer">
-    © 2026 SAS Special Operations Group
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
   </footer>
 
-</div>
-
-<!-- OVERLAY MODAL -->
-<div class="overlay" id="overlay">
-  <div class="modal">
-    <h3>Apply inside Discord</h3>
-    <p>Copy the template below and paste it into the applications channel inside the server.</p>
-
-    <div class="copybox" id="copybox">
-Name: [Full name]
-Age: [Age]
-Location: [City, Country]
-Experience: [Short summary]
-Why I want to join: [2 to 3 lines]
-Availability: [Immediate or date]
-    </div>
-
-    <div style="display:flex;gap:12px;margin-top:12px;">
-      <button class="btn join" id="copyBtn">Copy</button>
-      <button class="btn" id="openDiscordBtn">Open Discord</button>
-      <button class="btn ghost" id="closeModal">Close</button>
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <button class="modal-close" data-close-modal aria-label="Close modal">&times;</button>
+      <h2 class="modal-title" id="modalTitle">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      
+      <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+        <button class="btn btn-primary" id="copyBtn">Copy Template</button>
+        <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2; text-decoration: none;">Open Discord</a>
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-  const hambtn = document.getElementById('hambtn');
-  const drawer = document.getElementById('drawer');
-  const closeDrawer = document.getElementById('closeDrawer');
-
- hambtn?.addEventListener('click', () => {
-  drawer.classList.add('open');
-});
-
-closeDrawer?.addEventListener('click', () => {
-  drawer.classList.remove('open');
-});
-
-/* JOIN FLOW */
-const overlay = document.getElementById('overlay');
-const applyBtn = document.getElementById('applyBtn');
-const contactBtn = document.getElementById('contactBtn');
-const joinTopBtn = document.getElementById('joinTopBtn');
-const heroJoin = document.getElementById('heroJoin');
-const drawerJoin = document.getElementById('drawerJoin');
-
-function openOverlay() {
-  overlay.classList.add('open');
-}
-
-function closeOverlay() {
-  overlay.classList.remove('open');
-}
-
-applyBtn?.addEventListener('click', () => {
-  openOverlay();
-  window.open("https://discord.gg/bzTGc9ew", "_blank");
-});
-
-joinTopBtn?.addEventListener('click', () => {
-  openOverlay();
-});
-
-heroJoin?.addEventListener('click', () => {
-  openOverlay();
-});
-
-drawerJoin?.addEventListener('click', () => {
-  drawer.classList.remove('open');
-  openOverlay();
-});
-
-contactBtn?.addEventListener('click', () => {
-  openOverlay();
-});
-
-/* CLOSE MODAL */
-document.getElementById('closeModal')?.addEventListener('click', () => {
-  closeOverlay();
-});
-
-/* COPY TEMPLATE */
-document.getElementById('copyBtn')?.addEventListener('click', async () => {
-  const text = document.getElementById('copybox').innerText.trim();
-  try {
-    await navigator.clipboard.writeText(text);
-    alert("Copied to clipboard");
-  } catch (err) {
-    alert("Copy failed. Please copy manually.");
-  }
-});
-
-/* OPEN DISCORD BUTTON */
-document.getElementById('openDiscordBtn')?.addEventListener('click', () => {
-  window.open("https://discord.gg/bzTGc9ew", "_blank");
-});
-
-/* CLOSE OVERLAY ON ESC */
-document.addEventListener('keydown', (e) => {
-  if (e.key === "Escape") {
-    closeOverlay();
-    drawer.classList.remove('open');
-  }
-});
-</script>
-
+  <script src="script.js"></script>
 </body>
 </html>

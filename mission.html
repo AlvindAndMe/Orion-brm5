@@ -1,80 +1,106 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Mission — SAS Special Operations Group</title>
-<link href="styles.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mission | SAS Special Operations Group</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-<div class="site">
-  <header class="site-header">
-    <div class="brand"><div class="logo">SAS</div><div><div style="font-size:12px;color:#666">Special Operations</div><div style="font-size:13px">SAS Special Operations Group</div></div></div>
-    <nav class="main-nav" aria-label="Main navigation">
-      <a href="index.html">Home</a>
-      <a href="mission.html" aria-current="page">Mission</a>
-    </nav>
-    <div class="nav-actions">
-      <a class="btn small join" href="apply.html">Apply</a>
-      <button class="hamburger" id="hambtn" aria-label="Open menu">☰</button>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">☰</button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
     </div>
   </header>
 
-  <div class="page-hero reveal" role="region" aria-labelledby="mission-title">
-    <div>
-      <div id="mission-title" class="title">Our Mission</div>
-      <div class="subtitle">Disciplined capability, trained for complex environments.</div>
+  <main>
+    <div class="hero" style="min-height: 400px;">
+      <div class="hero-container">
+        <div class="hero-content" style="grid-column: 1 / -1; max-width: 900px; margin: 0 auto; text-align: center; border-left: none; border-top: 4px solid var(--color-accent);">
+          <h1 class="hero-title">Mission Statement</h1>
+          <p class="hero-subtitle" style="margin-bottom: 0;">To provide the Commander with unique, precise, and lethal special operations capabilities in support of BRM5 strategic objectives.</p>
+        </div>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="card">
+        <h2 class="section-title">Purpose</h2>
+        <p class="lead">The Special Operations Group exists to conduct operations where risk is high, complexity is extreme, and the requirement for discretion is absolute. We are not a conventional force multiplier but a strategic instrument employed to resolve situations that cannot be addressed through other means.</p>
+        <p style="margin-top: 1.5rem;">Our mission set encompasses three primary pillars: the proactive disruption of hostile networks, the reactive resolution of terrorist incidents, and the provision of intelligence at depth. Each pillar requires distinct capabilities, but all demand the same fundamental qualities: initiative, resilience, and absolute professionalism.</p>
+      </div>
+
+      <div class="card" style="margin-top: 3rem;">
+        <h2 class="section-title">Operating Principles</h2>
+        <div style="margin-top: 2rem;">
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--color-primary);">Anonymity</h3>
+          <p style="margin-bottom: 2rem;">We do not seek recognition. Operational security and the protection of our methods, identities, and capabilities take precedence over public acknowledgment. Success is measured by mission outcomes, not visibility.</p>
+          
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--color-primary);">Self-Discipline</h3>
+          <p style="margin-bottom: 2rem;">The Group operates without direct supervision in high-stress environments. Every operator must demonstrate unwavering self-discipline, ethical conduct, and the ability to make lawful decisions under extreme pressure.</p>
+          
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--color-primary);">Versatility</h3>
+          <p style="margin-bottom: 2rem;">No two operations are identical. We train for the full spectrum of conflict, from high-intensity direct action to covert reconnaissance and partner force enablement. Adaptability is not optional; it is a core requirement.</p>
+          
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem; color: var(--color-primary);">Precision</h3>
+          <p>We minimise collateral damage through superior training, detailed planning, and surgical execution. The use of force is always proportionate, necessary, and meticulously calculated.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top: 3rem; background-color: var(--color-primary); color: var(--color-white); border: none;">
+        <h2 class="section-title" style="color: var(--color-white);">Strategic Effect</h2>
+        <p style="font-size: 1.125rem; opacity: 0.9;">By maintaining a constant state of high readiness and deploying only when absolutely necessary, the Special Operations Group provides decision-makers with options that do not risk escalation or political entanglement. We are the silent option. We are the final option.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
+  </footer>
+
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <h2 class="modal-title">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      <button class="btn btn-primary" id="copyBtn" style="margin-right: 1rem;">Copy Template</button>
+      <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2;">Open Discord</a>
     </div>
   </div>
 
-  <div class="container">
-    <main class="article reveal" role="main" aria-labelledby="mission-main">
-      <h2 id="mission-main">What we do</h2>
-      <p class="muted">The SAS conducts specialist operations, advanced training and unit development to maintain operational readiness across BRM5 theatres.</p>
-
-      <section style="margin-top:18px">
-        <h3 class="caps">Principles</h3>
-        <ul style="padding-left:18px">
-          <li><strong>Discipline:</strong> rigorous standards in planning and execution.</li>
-          <li><strong>Precision:</strong> measured, intelligence-led action.</li>
-          <li><strong>Adaptability:</strong> training for diverse environments and contingencies.</li>
-        </ul>
-      </section>
-
-      <section style="margin-top:18px">
-        <h3 class="caps">Training</h3>
-        <p>Training cycles are structured around mission profiles: urban, mountain, maritime, and arid environments. Emphasis is placed on live-fire, navigation, medical, and communications drills.</p>
-      </section>
-
-      <section style="margin-top:18px">
-        <h3 class="caps">Ethics</h3>
-        <p>Professionalism, accountability, and continuous improvement underpin all activity.</p>
-      </section>
-    </main>
-
-    <aside class="aside reveal">
-      <div class="card">
-        <h4>Training calendar</h4>
-        <p class="muted">Contact the discord for more information.</p>
-      </div>
-
-
-  <footer class="site-footer">© 2026 SAS Special Operations Group</footer>
-</div>
-
-<script>
-  // Mobile drawer + reveal (same as operations)
-  const hambtn = document.getElementById('hambtn');
-  const drawer = document.createElement('div');
-  drawer.className = 'mobile-drawer';
-  drawer.innerHTML = '<button id="closeDrawer" style="border:0;background:transparent;padding:8px;margin-bottom:12px;font-weight:800">Close ✕</button><a href="index.html">Home</a><a href="mission.html">Mission</a><a href="operations.html">Operations</a><a href="highlights.html">Highlights</a><a href="apply.html">Join</a>';
-  document.body.appendChild(drawer);
-  hambtn && hambtn.addEventListener('click', ()=>{ drawer.classList.add('open'); drawer.setAttribute('aria-hidden','false'); drawer.querySelector('a')?.focus(); });
-  document.getElementById('closeDrawer')?.addEventListener('click', ()=>{ drawer.classList.remove('open'); drawer.setAttribute('aria-hidden','true'); hambtn?.focus(); });
-
-  const reveals = document.querySelectorAll('.reveal');
-  const revealOnScroll = ()=>{ const top = window.innerHeight * 0.85; reveals.forEach(el=>{ const r = el.getBoundingClientRect(); if(r.top < top) el.classList.add('visible'); }); };
-  window.addEventListener('scroll', revealOnScroll, {passive:true}); window.addEventListener('load', revealOnScroll);
-</script>
+  <script src="script.js"></script>
 </body>
 </html>

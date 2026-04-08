@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FAQ | SAS Special Operations Group</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-container">
+      <a href="index.html" class="logo">SAS SOG</a>
+      <nav class="nav">
+        <a href="mission.html" class="nav-link">Mission</a>
+        <a href="operations.html" class="nav-link">Operations</a>
+        <a href="training.html" class="nav-link">Training</a>
+        <a href="structure.html" class="nav-link">Structure</a>
+        <a href="history.html" class="nav-link">History</a>
+        <a href="faq.html" class="nav-link">FAQ</a>
+        <a href="join.html" class="nav-link">Join</a>
+      </nav>
+      <button class="btn btn-primary btn-join-header" data-open-modal>Join Now</button>
+      <button class="menu-toggle" id="menuToggle">☰</button>
+    </div>
+    <div class="mobile-drawer" id="mobileDrawer">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="mission.html" class="nav-link">Mission</a>
+      <a href="operations.html" class="nav-link">Operations</a>
+      <a href="training.html" class="nav-link">Training</a>
+      <a href="equipment.html" class="nav-link">Equipment</a>
+      <a href="structure.html" class="nav-link">Structure</a>
+      <a href="history.html" class="nav-link">History</a>
+      <a href="values.html" class="nav-link">Values</a>
+      <a href="readiness.html" class="nav-link">Readiness</a>
+      <a href="faq.html" class="nav-link">FAQ</a>
+      <a href="join.html" class="nav-link">Join</a>
+      <button class="btn btn-primary mt-1" data-open-modal style="width: 100%;">Join Now</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <h1 class="section-title">Frequently Asked Questions</h1>
+      
+      <div class="faq-item">
+        <h3 class="faq-question">What is the minimum age requirement to join?</h3>
+        <p>Applicants must be at least 16 years of age. There is no upper age limit provided you can meet the physical standards of Selection. However, most successful candidates fall between 16 and 25 years of age, as the physical demands of the role tend to favour younger applicants.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">Do I need previous special forces or military RP experience?</h3>
+        <p>No. While previous experience in military simulation or roleplay is beneficial, it is not a requirement. We have successfully trained candidates with no prior experience into effective operators. What matters more is attitude, willingness to learn, and the ability to function as part of a team. We provide all necessary training.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">How often are operations conducted?</h3>
+        <p>Major operations are typically conducted weekly, usually during weekend evenings to accommodate timezone differences. However, training sessions occur throughout the week, and counter-terrorism standby requires 24-hour availability. We expect members to attend at least one major operation per week and participate in training appropriate to their development level.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">Can I transfer from another unit within BRM5?</h3>
+        <p>Yes, we accept transfers from other units provided you meet our entry standards. Transfer candidates still undergo Selection to ensure they meet our physical and tactical standards, but previous good conduct and experience may accelerate your progression through the training pipeline. You must leave your previous unit on good terms.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">What timezone does the unit operate in?</h3>
+        <p>We are an international unit with members across GMT and EST timezones. Our primary operations are scheduled to accommodate both regions, usually occurring between 1800-2200 GMT on weekends. We require members to be available during these windows at least twice per week. Specific troop assignments may consider timezone compatibility.</p>
+      </div>
+
+      <div class="faq-item">
+        <h3 class="faq-question">Is there a rank structure or is it operator-based?</h3>
+        <p>We maintain a rank structure for administrative and command purposes, but operate on a first-name basis within teams. Rank indicates responsibility, not superiority. An operator with specialized skills may lead an element regardless of rank. We emphasize competence over hierarchy in tactical situations.</p>
+      </div>
+
+      <div class="faq-item" style="border-bottom: none;">
+        <h3 class="faq-question">What happens if I fail Selection?</h3>
+        <p>Candidates who fail Selection may re-apply after a 30-day period. We provide feedback on areas requiring improvement. Many successful operators failed Selection on their first attempt. Persistence and the ability to learn from failure are qualities we value. There is no limit to the number of attempts, though we expect to see improvement between attempts.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 SAS Special Operations Group. All rights reserved.</p>
+    <p class="footer-disclaimer">This is a fictional military simulation unit for Blackhawk Rescue Mission 5. Not affiliated with the UK Ministry of Defence.</p>
+  </footer>
+
+  <div class="modal-overlay" id="joinModal" role="dialog" aria-modal="true">
+    <div class="modal">
+      <button class="modal-close" data-close-modal>&times;</button>
+      <h2 class="modal-title">Begin Recruitment</h2>
+      <p>To apply for the Special Operations Group, copy the template below and submit it via our Discord recruitment channel.</p>
+      <div class="template-box" id="appTemplate">Username: [Your Discord Username]
+Age: [Your Age]
+Timezone: [Your Timezone]
+Previous Experience: [Military Sim/RP Experience]
+Why do you want to join: [Brief Statement]
+Availability: [Hours per week]</div>
+      <button class="btn btn-primary" id="copyBtn" style="margin-right: 1rem;">Copy Template</button>
+      <a href="https://discord.gg/Y2cGdJ6dvd" target="_blank" class="btn btn-primary" style="background-color: #5865F2;">Open Discord</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

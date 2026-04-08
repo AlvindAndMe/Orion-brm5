@@ -511,3 +511,12 @@ body {
   color: var(--color-text-light);
   line-height: 1.7;
 }
+
+.SAS-logo {
+  height: 40px;           /* Adjust this value to make it smaller/bigger */
+  width: auto;            /* Maintains aspect ratio */
+  max-width: 150px;       /* Prevents it from getting too wide */
+  object-fit: contain;    /* Ensures image stays crisp */
+  display: inline-block;
+  vertical-align: middle;
+}

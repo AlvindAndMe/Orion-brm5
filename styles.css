@@ -519,4 +519,5 @@ body {
   object-fit: contain;    /* Ensures image stays crisp */
   display: inline-block;
   vertical-align: middle;
+  z-index: 5;
 }

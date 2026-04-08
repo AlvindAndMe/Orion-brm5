@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>SAS Special Operations Group</title>
-<meta name="description" content="SAS Special Operations Group — operational readiness, specialist training and recruitment." />
+<meta name="description" content="SAS Special Operations Group - operational readiness, specialist training and recruitment." />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 
@@ -27,8 +27,6 @@
     font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
     color:var(--black);
     background:var(--muted);
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
     line-height:1.45;
   }
   a{color:inherit;text-decoration:none}
@@ -41,7 +39,7 @@
     display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0;
   }
   .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:0.6px; text-transform:uppercase; font-size:14px; }
-  .brand .logo { width:40px; height:40px; background:#111; display:inline-grid; place-items:center; color:var(--white); font-weight:700; border-radius:2px; }
+  .brand .logo { width:40px; height:40px; background:#111; display:grid; place-items:center; color:var(--white); font-weight:700; border-radius:2px; }
   nav.main-nav { display:flex; gap:18px; align-items:center; }
   nav.main-nav a { padding:8px 10px; font-weight:600; font-size:14px; color:#111; }
   .nav-actions { display:flex; gap:12px; align-items:center; }
@@ -60,18 +58,21 @@
     grid-template-columns: 1fr 420px;
     align-items:center;
     gap:24px;
-    height:520px;
+    min-height:520px;
     background:#111;
     border-radius:6px;
     overflow:hidden;
     margin:24px 0;
   }
 
+  .hero-media {
+    min-height:520px;
+  }
+
   .hero-media img {
     width:100%;
     height:100%;
     object-fit:cover;
-    max-width:100%;
   }
 
   .hero-panel {
@@ -210,7 +211,8 @@
     </div>
 
     <nav class="main-nav">
-      <a href="./mission.html">Mission</a>
+      <a href="#mission">Mission</a>
+      <a href="#operations">Operations</a>
       <a href="#join">Join</a>
     </nav>
 
@@ -223,7 +225,8 @@
   <!-- MOBILE DRAWER -->
   <nav class="mobile-drawer" id="drawer">
     <button id="closeDrawer" style="border:0;background:none;font-weight:800;text-align:left">Close ✕</button>
-    <a href="./mission.html">Mission</a>
+    <a href="#mission">Mission</a>
+    <a href="#operations">Operations</a>
     <a href="#join" id="drawerJoin">Join</a>
   </nav>
 
@@ -235,7 +238,7 @@
 
     <div class="hero-panel">
       <h1>SPECIAL AIR SERVICE</h1>
-      <p class="lead">Operational readiness and specialist training within BRM5.</p>
+      <p class="lead">Elite readiness for the most demanding BRM5 operations. Our operators train to move fast, strike clean, and adapt instantly to changing conditions. Whether in dense urban terrain or remote mountain ranges, the SAS stands ready to execute missions with precision and discipline.</p>
 
       <div class="hero-buttons">
         <a class="btn join" id="heroJoin">Join SAS</a>
@@ -253,6 +256,30 @@
       <div class="muted">Who dares wins.</div>
     </div>
 
+    <p>The SAS Special Operations Group exists to provide a rapid response force that can operate across every environment found in BRM5. Our purpose is clear: deliver precision, discipline, and adaptability in situations where failure is not an option.</p>
+
+    <p>We specialize in missions that require stealth, coordination, and technical skill. Whether we are conducting reconnaissance deep behind enemy lines or executing coordinated raids in contested zones, our operators are trained to maintain initiative under pressure and complete objectives with minimal footprint.</p>
+
+    <p>Our mission is built on three core principles:</p>
+
+    <ul>
+      <li><strong>Precision</strong> - Every action is deliberate.</li>
+      <li><strong>Discipline</strong> - Standards are consistent and enforced.</li>
+      <li><strong>Adaptability</strong> - No terrain is too hostile and no scenario is too complex.</li>
+    </ul>
+
+    <p>We train to move with intent, strike with accuracy, and operate with a level of professionalism that sets the standard for all units in the field.</p>
+  </section>
+
+  <!-- OPERATIONS -->
+  <section id="operations">
+    <div class="section-head">
+      <div>
+        <div class="caps">Operations</div>
+        <h2>How we operate</h2>
+      </div>
+    </div>
+
     <div class="grid-4">
       <article class="card">
         <div style="display:flex;gap:12px;align-items:center">
@@ -264,7 +291,7 @@
             <p class="muted">Direct action, CQB, and precision raids.</p>
           </div>
         </div>
-        <p>Coordinated strikes executed rapidly with strict discipline and planning.</p>
+        <p>Assault teams are trained for direct action in high risk environments. Operators specialize in close quarters battle, dynamic entry, and rapid target acquisition. Missions include hostage rescue, high value target capture, and disruption of enemy infrastructure. We emphasize coordination, speed, and controlled aggression.</p>
       </article>
 
       <article class="card">
@@ -274,10 +301,10 @@
           </div>
           <div>
             <h3>Reconnaissance</h3>
-            <p class="muted">Long-range patrols and intelligence gathering.</p>
+            <p class="muted">Long range patrols and intelligence gathering.</p>
           </div>
         </div>
-        <p>Stealthy observation and reporting to inform operational decisions.</p>
+        <p>Recon teams conduct long range patrols, covert observation, and intelligence gathering. These missions often require extended periods of isolation, stealth movement, and precise reporting. Operators are trained in navigation, camouflage, surveillance equipment, and silent communication.</p>
       </article>
 
       <article class="card">
@@ -290,7 +317,7 @@
             <p class="muted">Logistics, medical, and tactical coordination.</p>
           </div>
         </div>
-        <p>Reliable support elements that enable sustained operations.</p>
+        <p>Support elements ensure that every operation can be sustained from start to finish. This includes logistics, medical response, communications, and tactical coordination. Our medics stabilize casualties under fire. Our logistics teams maintain supply lines in unpredictable terrain.</p>
       </article>
 
       <article class="card">
@@ -303,7 +330,7 @@
             <p class="muted">Transport, CAS, and aerial recon.</p>
           </div>
         </div>
-        <p>Air assets integrated for mobility and overwatch.</p>
+        <p>Aviation assets provide mobility, overwatch, and fire support. From insertion and extraction to close air support and aerial reconnaissance, our pilots operate in tight coordination with ground teams. Aviation extends our reach and increases our tempo.</p>
       </article>
     </div>
   </section>
@@ -322,6 +349,8 @@
         <button class="btn ghost" id="contactBtn">Contact</button>
       </div>
     </div>
+
+    <p style="margin-top:18px;">Recruitment into the SAS is selective by design. We look for individuals who demonstrate discipline, initiative, and the willingness to push beyond personal limits. Applicants must be prepared for physical demands, mental discipline, team integration, and operational readiness. All applications are handled inside our Discord server.</p>
   </section>
 
   <!-- FOOTER -->
@@ -335,7 +364,19 @@
 <div class="overlay" id="overlay">
   <div class="modal">
     <h3>Apply inside Discord</h3>
+    <p>Copy the template below and paste it into the applications channel inside the server.</p>
+
+    <div class="copybox" id="copybox">
+Name: [Full name]
+Age: [Age]
+Location: [City, Country]
+Experience: [Short summary]
+Why I want to join: [2 to 3 lines]
+Availability: [Immediate or date]
+    </div>
+
     <div style="display:flex;gap:12px;margin-top:12px;">
+      <button class="btn join" id="copyBtn">Copy</button>
       <button class="btn" id="openDiscordBtn">Open Discord</button>
       <button class="btn ghost" id="closeModal">Close</button>
     </div>
@@ -347,52 +388,80 @@
   const drawer = document.getElementById('drawer');
   const closeDrawer = document.getElementById('closeDrawer');
 
-  hambtn?.addEventListener('click', () => {
-    drawer.classList.add('open');
-  });
+ hambtn?.addEventListener('click', () => {
+  drawer.classList.add('open');
+});
 
-  closeDrawer?.addEventListener('click', () => {
-    drawer.classList.remove('open');
-  });
+closeDrawer?.addEventListener('click', () => {
+  drawer.classList.remove('open');
+});
 
-  // JOIN FLOW
-  const overlay = document.getElementById('overlay');
-  const applyBtn = document.getElementById('applyBtn');
-  const contactBtn = document.getElementById('contactBtn');
-  const joinTopBtn = document.getElementById('joinTopBtn');
-  const heroJoin = document.getElementById('heroJoin');
-  const drawerJoin = document.getElementById('drawerJoin');
+/* JOIN FLOW */
+const overlay = document.getElementById('overlay');
+const applyBtn = document.getElementById('applyBtn');
+const contactBtn = document.getElementById('contactBtn');
+const joinTopBtn = document.getElementById('joinTopBtn');
+const heroJoin = document.getElementById('heroJoin');
+const drawerJoin = document.getElementById('drawerJoin');
 
-  function openOverlay() {
-    overlay.classList.add('open');
-  }
-  function closeOverlay() {
-    overlay.classList.remove('open');
-  }
+function openOverlay() {
+  overlay.classList.add('open');
+}
 
-  applyBtn?.addEventListener('click', () => {
-    openOverlay();
-    window.open("https://discord.gg/bzTGc9ew", "_blank");
-  });
+function closeOverlay() {
+  overlay.classList.remove('open');
+}
 
-  joinTopBtn?.addEventListener('click', openOverlay);
-  heroJoin?.addEventListener('click', openOverlay);
-  drawerJoin?.addEventListener('click', openOverlay);
-  contactBtn?.addEventListener('click', openOverlay);
+applyBtn?.addEventListener('click', () => {
+  openOverlay();
+  window.open("https://discord.gg/bzTGc9ew", "_blank");
+});
 
-  document.getElementById('closeModal')?.addEventListener('click', closeOverlay);
+joinTopBtn?.addEventListener('click', () => {
+  openOverlay();
+});
 
-  // COPY TEMPLATE
-  document.getElementById('copyBtn')?.addEventListener('click', async () => {
-    const text = document.getElementById('copybox').innerText.trim();
+heroJoin?.addEventListener('click', () => {
+  openOverlay();
+});
+
+drawerJoin?.addEventListener('click', () => {
+  drawer.classList.remove('open');
+  openOverlay();
+});
+
+contactBtn?.addEventListener('click', () => {
+  openOverlay();
+});
+
+/* CLOSE MODAL */
+document.getElementById('closeModal')?.addEventListener('click', () => {
+  closeOverlay();
+});
+
+/* COPY TEMPLATE */
+document.getElementById('copyBtn')?.addEventListener('click', async () => {
+  const text = document.getElementById('copybox').innerText.trim();
+  try {
     await navigator.clipboard.writeText(text);
-    alert("Copied!");
-  });
+    alert("Copied to clipboard");
+  } catch (err) {
+    alert("Copy failed. Please copy manually.");
+  }
+});
 
-  // OPEN DISCORD
-  document.getElementById('openDiscordBtn')?.addEventListener('click', () => {
-    window.open("https://discord.gg/bzTGc9ew", "_blank");
-  });
+/* OPEN DISCORD BUTTON */
+document.getElementById('openDiscordBtn')?.addEventListener('click', () => {
+  window.open("https://discord.gg/bzTGc9ew", "_blank");
+});
+
+/* CLOSE OVERLAY ON ESC */
+document.addEventListener('keydown', (e) => {
+  if (e.key === "Escape") {
+    closeOverlay();
+    drawer.classList.remove('open');
+  }
+});
 </script>
 
 </body>

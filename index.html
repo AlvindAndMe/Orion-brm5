@@ -7,129 +7,299 @@
 <meta name="description" content="SAS Special Operations Group — operational readiness, specialist training and recruitment." />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-<link href="./styles.css" rel="stylesheet">
+
+<style>
+  :root{
+    --black:#0b0b0b;
+    --white:#ffffff;
+    --muted:#f5f5f5;
+    --accent:#FCD116;
+    --max-width:1200px;
+    --gap:24px;
+    --radius:4px;
+    --ease:cubic-bezier(.2,.9,.3,1);
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+    color:var(--black);
+    background:var(--muted);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    line-height:1.45;
+  }
+  a{color:inherit;text-decoration:none}
+  img{display:block;max-width:100%}
+
+  .site { max-width:var(--max-width); margin:0 auto; padding:28px; }
+
+  /* HEADER */
+  header.site-header{
+    display:flex; align-items:center; justify-content:space-between; gap:16px; padding:8px 0;
+  }
+  .brand { display:flex; align-items:center; gap:12px; font-weight:800; letter-spacing:0.6px; text-transform:uppercase; font-size:14px; }
+  .brand .logo { width:40px; height:40px; background:#111; display:inline-grid; place-items:center; color:var(--white); font-weight:700; border-radius:2px; }
+  nav.main-nav { display:flex; gap:18px; align-items:center; }
+  nav.main-nav a { padding:8px 10px; font-weight:600; font-size:14px; color:#111; }
+  .nav-actions { display:flex; gap:12px; align-items:center; }
+
+  /* HAMBURGER ONLY ON MOBILE */
+  .hamburger { display:none; width:40px; height:40px; border:1px solid #ddd; background:var(--white); align-items:center; justify-content:center; cursor:pointer; }
+
+  @media (max-width:720px){
+    nav.main-nav { display:none; }
+    .hamburger { display:flex; }
+  }
+
+  /* HERO */
+  .hero {
+    display:grid;
+    grid-template-columns: 1fr 420px;
+    align-items:center;
+    gap:24px;
+    height:520px;
+    background:#111;
+    border-radius:6px;
+    overflow:hidden;
+    margin:24px 0;
+  }
+
+  .hero-media img {
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    max-width:100%;
+  }
+
+  .hero-panel {
+    background:rgba(0,0,0,0.65);
+    padding:32px;
+    border-radius:6px;
+    backdrop-filter:blur(4px);
+    color:white;
+  }
+
+  .hero h1{ margin:0 0 12px 0; font-size:36px; font-weight:800; }
+  .hero p.lead{ margin:0 0 20px 0; color:rgba(255,255,255,0.95); font-size:16px; }
+
+  .hero-buttons{ display:flex; gap:12px; margin-top:8px; }
+
+  .btn {
+    display:inline-flex; align-items:center; gap:10px;
+    padding:10px 18px;
+    border:2px solid var(--black);
+    background:var(--white);
+    color:var(--black);
+    font-weight:700;
+    font-size:14px;
+    border-radius:var(--radius);
+    transition:all .18s var(--ease);
+  }
+  .btn.join:hover { background:var(--accent); }
+  .btn.ghost { background:transparent; border-color:rgba(255,255,255,0.2); color:white; }
+
+  @media (max-width:720px){
+    .hero {
+      grid-template-columns:1fr;
+      height:auto;
+      padding-bottom:24px;
+    }
+    .hero-panel { padding:20px; }
+  }
+
+  /* MOBILE DRAWER */
+  .mobile-drawer {
+    position:fixed; right:0; top:0;
+    height:100vh; width:320px;
+    background:white;
+    box-shadow:-12px 0 40px rgba(0,0,0,0.12);
+    transform:translateX(110%);
+    transition:transform .28s var(--ease);
+    z-index:60;
+    padding:24px;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .mobile-drawer.open { transform:translateX(0); }
+  .mobile-drawer a { padding:12px 0; border-bottom:1px solid #eee; font-weight:700; }
+
+  /* SECTIONS */
+  section { margin:48px 0; }
+  .section-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+  .grid-4 { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; }
+
+  @media (max-width:1000px){ .grid-4 { grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:720px){ .grid-4 { grid-template-columns:1fr; } }
+
+  .card {
+    background:white;
+    border:1px solid #e6e6e6;
+    padding:18px;
+    border-radius:6px;
+    display:flex; flex-direction:column; gap:12px;
+    transition:transform .18s var(--ease), box-shadow .18s var(--ease);
+  }
+  .card:hover { transform:translateY(-6px); box-shadow:0 10px 30px rgba(0,0,0,0.08); }
+
+  .card-icon {
+    width:44px; height:44px;
+    display:grid; place-items:center;
+    background:#111; color:white;
+    border-radius:4px;
+  }
+
+  .caps { text-transform:uppercase; font-weight:700; font-size:12px; color:#222; }
+  .muted { color:#777; font-size:14px; }
+
+  /* JOIN STRIP */
+  .join-strip {
+    display:flex; justify-content:space-between; align-items:center;
+    background:#111; color:white;
+    padding:22px;
+    border-radius:6px;
+  }
+
+  /* OVERLAY MODAL */
+  .overlay {
+    position:fixed; inset:0;
+    display:none;
+    align-items:center; justify-content:center;
+    background:rgba(0,0,0,0.6);
+    z-index:120;
+    padding:24px;
+  }
+  .overlay.open { display:flex; }
+
+  .modal {
+    width:100%; max-width:720px;
+    background:white;
+    border-radius:8px;
+    padding:20px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+  }
+
+  .copybox {
+    width:100%;
+    padding:12px;
+    border:1px solid #e6e6e6;
+    border-radius:6px;
+    background:#fafafa;
+    font-family:monospace;
+    font-size:13px;
+    color:#111;
+    white-space:pre-wrap;
+  }
+
+  footer.site-footer { text-align:center; padding:20px 0; color:#666; }
+</style>
 </head>
 <body>
 
-<div class="site" id="top">
+<div class="site">
 
-  <!-- Header -->
-  <header class="site-header" role="banner">
-    <div class="brand" aria-hidden="false">
-      <div class="logo" aria-hidden="true">SAS</div>
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="brand">
+      <div class="logo">SAS</div>
       <div>
         <div style="font-size:12px;color:#666">Special Operations</div>
         <div style="font-size:13px">SAS Special Operations Group</div>
       </div>
     </div>
 
-    <nav class="main-nav" aria-label="Main navigation">
+    <nav class="main-nav">
       <a href="./mission.html">Mission</a>
-      <a href="./operations.html">Operations</a>
       <a href="#join">Join</a>
     </nav>
 
     <div class="nav-actions">
-      <button class="btn join" onclick="location.href='#join'" aria-label="Apply to join">
-        <!-- Lucide user-plus -->
-        <svg class="icon icon-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-        <span>Join</span>
-      </button>
-
-      <button class="hamburger" aria-label="Open menu" id="hambtn">
-        <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect width="18" height="2" rx="1" fill="#111"/><rect y="5" width="18" height="2" rx="1" fill="#111"/><rect y="10" width="18" height="2" rx="1" fill="#111"/></svg>
-      </button>
+      <button class="btn join" id="joinTopBtn">Join</button>
+      <button class="hamburger" id="hambtn">☰</button>
     </div>
   </header>
 
-  <!-- Mobile drawer -->
-  <div class="mobile-drawer" id="drawer" aria-hidden="true" aria-label="Mobile menu">
-    <button id="closeDrawer" style="border:0;background:transparent;padding:8px;margin-bottom:12px;font-weight:800">Close ✕</button>
-    <a href="#mission">Mission</a>
-    <a href="#join">Join</a>
-  </div>
+  <!-- MOBILE DRAWER -->
+  <nav class="mobile-drawer" id="drawer">
+    <button id="closeDrawer" style="border:0;background:none;font-weight:800;text-align:left">Close ✕</button>
+    <a href="./mission.html">Mission</a>
+    <a href="#join" id="drawerJoin">Join</a>
+  </nav>
 
   <!-- HERO -->
-  <section class="hero" aria-label="Hero" role="region">
-    <div class="hero-media reveal" aria-hidden="false">
-      <!-- Replace hero.png with your hero image file -->
-      <img src="./hero.png" alt="SAS operator in field" loading="lazy" width="1600" height="900" />
+  <section class="hero">
+    <div class="hero-media">
+      <img src="./hero.png" alt="SAS operator in field">
     </div>
 
-    <div class="hero-panel hero-text reveal" role="article" aria-labelledby="hero-title">
-      <h1 id="hero-title">SPECIAL AIR SERVICE</h1>
+    <div class="hero-panel">
+      <h1>SPECIAL AIR SERVICE</h1>
       <p class="lead">Operational readiness and specialist training within BRM5.</p>
 
-      <div class="hero-buttons" role="group" aria-label="Hero actions">
-        <a class="btn join" href="#join">
-          <svg class="icon icon-spin" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-          Join SAS
-        </a>
+      <div class="hero-buttons">
+        <a class="btn join" id="heroJoin">Join SAS</a>
       </div>
     </div>
   </section>
 
-  <!-- Mission -->
-  <section id="mission" class="reveal" aria-labelledby="mission-title">
+  <!-- MISSION -->
+  <section id="mission">
     <div class="section-head">
       <div>
         <div class="caps">Our Mission</div>
-        <h2 id="mission-title" style="margin:6px 0 0 0">What we do</h2>
+        <h2>What we do</h2>
       </div>
       <div class="muted">Who dares wins.</div>
     </div>
 
-    <div class="grid-4" role="list">
-      <article class="card" role="listitem" aria-labelledby="assault-title">
+    <div class="grid-4">
+      <article class="card">
         <div style="display:flex;gap:12px;align-items:center">
-          <div class="card-icon" aria-hidden="true">
-            <!-- target icon -->
+          <div class="card-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
           </div>
           <div>
-            <h3 id="assault-title">Assault Operations</h3>
+            <h3>Assault Operations</h3>
             <p class="muted">Direct action, CQB, and precision raids.</p>
           </div>
         </div>
         <p>Coordinated strikes executed rapidly with strict discipline and planning.</p>
       </article>
 
-      <article class="card" role="listitem" aria-labelledby="recon-title">
+      <article class="card">
         <div style="display:flex;gap:12px;align-items:center">
-          <div class="card-icon" aria-hidden="true">
-            <!-- compass icon -->
+          <div class="card-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polygon points="16 8 12 12 8 16 16 8"></polygon></svg>
           </div>
           <div>
-            <h3 id="recon-title">Reconnaissance</h3>
+            <h3>Reconnaissance</h3>
             <p class="muted">Long-range patrols and intelligence gathering.</p>
           </div>
         </div>
         <p>Stealthy observation and reporting to inform operational decisions.</p>
       </article>
 
-      <article class="card" role="listitem" aria-labelledby="support-title">
+      <article class="card">
         <div style="display:flex;gap:12px;align-items:center">
-          <div class="card-icon" aria-hidden="true">
-            <!-- settings icon -->
+          <div class="card-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 15.5A3.5 3.5 0 1 0 12 8.5a3.5 3.5 0 0 0 0 7z"></path></svg>
           </div>
           <div>
-            <h3 id="support-title">Support</h3>
-            <p class="muted">Logistics, medevac, and tactical coordination.</p>
+            <h3>Support</h3>
+            <p class="muted">Logistics, medical, and tactical coordination.</p>
           </div>
         </div>
         <p>Reliable support elements that enable sustained operations.</p>
       </article>
 
-      <article class="card" role="listitem" aria-labelledby="aviation-title">
+      <article class="card">
         <div style="display:flex;gap:12px;align-items:center">
-          <div class="card-icon" aria-hidden="true">
-            <!-- airplane icon -->
+          <div class="card-icon">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M2.5 19.5L21 12 2.5 4.5 2.5 10l13 2-13 2z"></path></svg>
           </div>
           <div>
-            <h3 id="aviation-title">Aviation</h3>
+            <h3>Aviation</h3>
             <p class="muted">Transport, CAS, and aerial recon.</p>
           </div>
         </div>
@@ -138,80 +308,92 @@
     </div>
   </section>
 
-  
-  <!-- Join -->
-  <section id="join" class="reveal" aria-labelledby="join-title">
+  <!-- JOIN -->
+  <section id="join">
     <div class="join-strip">
       <div>
         <div class="caps">Recruitment</div>
-        <h3 id="join-title" style="margin:6px 0 0 0">Join the SAS</h3>
-        <p class="muted" style="margin-top:8px">Short eligibility criteria and next steps for applicants.</p>
+        <h3>Join the SAS</h3>
+        <p class="muted">Service eligibility criteria and next steps for applicants.</p>
       </div>
 
       <div style="display:flex;gap:12px;align-items:center">
-        <a class="btn join" href="https://discord.gg/bzTGc9ew" target="_blank">
-          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-          Apply
-        </a>
-
-        <a class="btn ghost" href="https://discord.gg/bzTGc9ew">
-          <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-          Contact
-        </a>
+        <a class="btn join" id="applyBtn" target="_blank" rel="noopener">Apply</a>
+        <button class="btn ghost" id="contactBtn">Contact</button>
       </div>
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="site-footer" role="contentinfo">
-    <div style="max-width:var(--max-width);margin:0 auto;padding:12px 16px;">
-      <div style="display:flex;flex-direction:column;gap:6px;align-items:center">
-        <div style="font-weight:700">© 2026 SAS Special Operations Group</div>
-      </div>
-    </div>
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    © 2026 SAS Special Operations Group
   </footer>
 
 </div>
 
+<!-- OVERLAY MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal">
+    <h3>Apply inside Discord</h3>
+    <div style="display:flex;gap:12px;margin-top:12px;">
+      <button class="btn" id="openDiscordBtn">Open Discord</button>
+      <button class="btn ghost" id="closeModal">Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
-  // Mobile drawer toggle
   const hambtn = document.getElementById('hambtn');
   const drawer = document.getElementById('drawer');
   const closeDrawer = document.getElementById('closeDrawer');
 
-  hambtn && hambtn.addEventListener('click', () => {
+  hambtn?.addEventListener('click', () => {
     drawer.classList.add('open');
-    drawer.setAttribute('aria-hidden','false');
-    // move focus into drawer for accessibility
-    drawer.querySelector('a')?.focus();
   });
-  closeDrawer && closeDrawer.addEventListener('click', () => {
+
+  closeDrawer?.addEventListener('click', () => {
     drawer.classList.remove('open');
-    drawer.setAttribute('aria-hidden','true');
-    hambtn?.focus();
   });
 
-  // Close drawer on Escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') {
-      drawer.classList.remove('open');
-      drawer.setAttribute('aria-hidden','true');
-    }
+  // JOIN FLOW
+  const overlay = document.getElementById('overlay');
+  const applyBtn = document.getElementById('applyBtn');
+  const contactBtn = document.getElementById('contactBtn');
+  const joinTopBtn = document.getElementById('joinTopBtn');
+  const heroJoin = document.getElementById('heroJoin');
+  const drawerJoin = document.getElementById('drawerJoin');
+
+  function openOverlay() {
+    overlay.classList.add('open');
+  }
+  function closeOverlay() {
+    overlay.classList.remove('open');
+  }
+
+  applyBtn?.addEventListener('click', () => {
+    openOverlay();
+    window.open("https://discord.gg/bzTGc9ew", "_blank");
   });
 
-  // Simple scroll reveal
-  const reveals = document.querySelectorAll('.reveal');
-  const revealOnScroll = () => {
-    const top = window.innerHeight * 0.85;
-    reveals.forEach(el => {
-      const r = el.getBoundingClientRect();
-      if (r.top < top) el.classList.add('visible');
-    });
-  };
-  window.addEventListener('scroll', revealOnScroll, {passive:true});
-  window.addEventListener('load', revealOnScroll);
+  joinTopBtn?.addEventListener('click', openOverlay);
+  heroJoin?.addEventListener('click', openOverlay);
+  drawerJoin?.addEventListener('click', openOverlay);
+  contactBtn?.addEventListener('click', openOverlay);
 
-  // Small accessibility: ensure images have alt text; lazy loading already used
+  document.getElementById('closeModal')?.addEventListener('click', closeOverlay);
+
+  // COPY TEMPLATE
+  document.getElementById('copyBtn')?.addEventListener('click', async () => {
+    const text = document.getElementById('copybox').innerText.trim();
+    await navigator.clipboard.writeText(text);
+    alert("Copied!");
+  });
+
+  // OPEN DISCORD
+  document.getElementById('openDiscordBtn')?.addEventListener('click', () => {
+    window.open("https://discord.gg/bzTGc9ew", "_blank");
+  });
 </script>
+
 </body>
 </html>

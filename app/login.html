@@ -34,7 +34,7 @@
     document.getElementById('discordLogin').addEventListener('click', (e) => {
       e.preventDefault();
       const clientId = '1491725983131369552';
-      const redirectUri = encodeURIComponent(window.location.origin + '/login.html');
+      const redirectUri = encodeURIComponent(window.location.origin + '/app/login.html');
       const scope = encodeURIComponent('identify guilds.members.read');
       const discordUrl = `https://discord.com/api/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=${scope}`;
       window.location.href = discordUrl;

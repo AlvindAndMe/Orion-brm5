@@ -80,14 +80,14 @@ class AuthManager {
   checkSession() {
     this.user = this.getSession();
     if (!this.user && !this.isPublicPage()) {
-      window.location.href = '/login.html';
+      window.location.href = '/app/login.html';
       return false;
     }
     return true;
   }
 
   isPublicPage() {
-    return window.location.pathname === '/login.html';
+    return window.location.pathname === '/app/login.html';
   }
 
   hasRole(minRole) {
@@ -106,7 +106,7 @@ class AuthManager {
 
   logout() {
     this.clearSession();
-    window.location.href = '/login.html';
+    window.location.href = '/app/login.html';
   }
 
   showError(msg) {

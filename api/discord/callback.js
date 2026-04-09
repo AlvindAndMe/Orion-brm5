@@ -1,18 +1,21 @@
 export default async function handler(req, res) {
-  // Only allow POST
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
-  const { code, redirectUri } = req.body;
-
-  if (!code) {
-    return res.status(400).json({ error: 'Missing code' });
-  }
+  // CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    // 1. Exchange code for access token
-    const tokenResponse = await fetch('https://discord.com/api/oauth2/token', {
+    const { code, redirectUri } = req.body || {};
+    
+    if (!code) throw new Error('Missing code');
+    if (!process.env.DISCORD_CLIENT_ID) throw new Error('Missing DISCORD_CLIENT_ID');
+    if (!process.env.DISCORD_CLIENT_SECRET) throw new Error('Missing DISCORD_CLIENT_SECRET');
+
+    // 1. Exchange code for token
+    const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
       method: 'POST',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
@@ -24,47 +27,39 @@ export default async function handler(req, res) {
       }),
     });
 
-    const tokenData = await tokenResponse.json();
+    const tokenData = await tokenRes.json();
+    if (!tokenRes.ok) throw new Error(tokenData.error_description || 'Token failed');
 
-    if (!tokenData.access_token) {
-      throw new Error('Failed to get access token');
-    }
-
-    // 2. Get user info
-    const userResponse = await fetch('https://discord.com/api/users/@me', {
+    // 2. Get user
+    const userRes = await fetch('https://discord.com/api/users/@me', {
       headers: { Authorization: `Bearer ${tokenData.access_token}` }
     });
-    const userData = await userResponse.json();
+    const userData = await userRes.json();
+    if (!userRes.ok) throw new Error('Failed to get user');
 
-    // 3. Get server roles (requires guilds.members.read scope)
-    const guildId = process.env.DISCORD_GUILD_ID; // Your SAS server ID
-    let roles = ['member']; // default fallback
-
+    // 3. Get roles from your server
+    let roles = ['member'];
+    const guildId = process.env.DISCORD_GUILD_ID;
+    
     if (guildId) {
-      const memberResponse = await fetch(
+      const memberRes = await fetch(
         `https://discord.com/api/users/@me/guilds/${guildId}/member`,
         { headers: { Authorization: `Bearer ${tokenData.access_token}` } }
       );
 
-      if (memberResponse.ok) {
-        const memberData = await memberResponse.json();
+      if (memberRes.ok) {
+        const memberData = await memberRes.json();
         
-        // Map Discord role IDs to your role names
-        const roleMap = {
-          [process.env.ROLE_COMMAND_ID]: 'command',
-          [process.env.ROLE_STAFF_ID]: 'staff',
-          // Add more role mappings as needed
-        };
-
-        roles = memberData.roles
-          .map(roleId => roleMap[roleId])
-          .filter(Boolean); // Remove undefined
-        
-        if (roles.length === 0) roles = ['member'];
+        // Hierarchy: Command (3) > Staff (2) > Member (1)
+        if (process.env.ROLE_COMMAND_ID && memberData.roles.includes(process.env.ROLE_COMMAND_ID)) {
+          roles = ['command'];
+        } else if (process.env.ROLE_STAFF_ID && memberData.roles.includes(process.env.ROLE_STAFF_ID)) {
+          roles = ['staff'];
+        }
       }
     }
 
-    // 4. Return data that auth.js expects
+    // 4. Return to auth.js
     return res.status(200).json({
       id: userData.id,
       username: userData.username,
@@ -74,8 +69,8 @@ export default async function handler(req, res) {
       roles: roles
     });
 
-  } catch (error) {
-    console.error('Auth error:', error);
-    return res.status(500).json({ error: 'Authentication failed' });
+  } catch (err) {
+    console.error('Auth error:', err.message);
+    return res.status(500).json({ error: err.message });
   }
 }

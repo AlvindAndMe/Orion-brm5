@@ -1,6 +1,6 @@
 const AUTH_CONFIG = {
   discordClientId: '1491725983131369552',
-  redirectUri: window.location.origin + '/login.html',
+  redirectUri: window.location.origin + '/app/login.html',
   backendUrl: window.location.origin
 };
 

@@ -1,3 +1,5 @@
+// Add at the top of auth.js
+console.log('Path:', window.location.pathname, 'Code:', new URLSearchParams(window.location.search).get('code'));
 const AUTH_CONFIG = {
   discordClientId: '1491725983131369552',
   redirectUri: window.location.origin + '/app/login.html',
@@ -17,11 +19,24 @@ class AuthManager {
   }
 
   init() {
-    // Check for OAuth callback
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get('code');
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get('code');
+  
+  // Handle callback
+  if (code && window.location.pathname.includes('/app/login.html')) {
+    this.handleCallback(code);
+    return;
+  }
+  
+  // NEW: If already logged in, go to app
+  if (this.getSession() && window.location.pathname.includes('/app/login.html')) {
+    window.location.href = '/app/app.html';
+    return;
+  }
+  
+  this.checkSession();
     
-    if (code && window.location.pathname === '/login.html') {
+    if (code && window.location.pathname === '/app/login.html') {
       this.handleCallback(code);
     } else {
       this.checkSession();
@@ -42,8 +57,8 @@ class AuthManager {
       this.setSession(data);
       
       // Clean URL and redirect
-      window.history.replaceState({}, document.title, '/app.html');
-      window.location.href = '/app.html';
+      window.history.replaceState({}, document.title, '/app/app.html');
+      window.location.href = '/app/app.html';
     } catch (err) {
       console.error('Auth error:', err);
       this.showError('Authentication failed. Please try again.');
@@ -176,7 +191,7 @@ class AuthManager {
       document.body.innerHTML = `
         <header class="header">
           <div class="header-container">
-            <a href="/app.html" class="logo">SAS SOG</a>
+            <a href="/app/app.html" class="logo">SAS SOG</a>
             <div class="user-menu" id="userMenu">
               <button class="btn logout-btn" onclick="auth.logout()">Logout</button>
             </div>
@@ -187,7 +202,7 @@ class AuthManager {
             <div class="access-denied-icon">⛔</div>
             <h1 class="section-title">Access Denied</h1>
             <p class="lead">This area is restricted to Command personnel only.</p>
-            <a href="/app.html" class="btn btn-primary mt-2">Return to Dashboard</a>
+            <a href="/app/app.html" class="btn btn-primary mt-2">Return to Dashboard</a>
           </div>
         </main>
       `;

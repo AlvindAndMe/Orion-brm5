@@ -45,7 +45,7 @@ class AuthManager {
 
   async handleCallback(code) {
     try {
-      const response = await fetch(`${AUTH_CONFIG.backendUrl}/auth/discord/callback`, {
+      const response = await fetch(`${AUTH_CONFIG.backendUrl}/api/auth/discord/callback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ code, redirectUri: AUTH_CONFIG.redirectUri })

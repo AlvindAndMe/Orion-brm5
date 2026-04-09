@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a1a">
+  <title>SAS | Command App</title>
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <style>
+    .app-container { min-height: 100vh; display: flex; flex-direction: column; }
+    .app-nav { background: var(--color-primary); border-bottom: 1px solid #333; }
+    .app-nav-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .nav-tabs { display: flex; gap: 0.5rem; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .nav-tab { 
+      color: rgba(255,255,255,0.7); 
+      text-decoration: none; 
+      padding: 0.5rem 1rem; 
+      font-size: 0.875rem; 
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-tab:hover, .nav-tab.active { color: var(--color-white); border-bottom-color: var(--color-accent); }
+    .user-pill { 
+      display: flex; align-items: center; gap: 0.5rem; 
+      background: rgba(255,255,255,0.1); 
+      padding: 0.375rem 0.75rem; 
+      border-radius: 20px;
+      color: var(--color-white);
+      font-size: 0.875rem;
+    }
+    .user-avatar { width: 28px; height: 28px; border-radius: 50%; }
+    .view { display: none; padding: 1.5rem; max-width: 1200px; margin: 0 auto; width: 100%; }
+    .view.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .status-badge { 
+      display: inline-flex; align-items: center; gap: 0.375rem;
+      padding: 0.25rem 0.75rem; 
+      border-radius: 12px; 
+      font-size: 0.75rem; 
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .status-operational { background: #1e3a2f; color: #4ade80; }
+    .status-standby { background: #3d3d1c; color: #facc15; }
+    .status-none { background: #374151; color: #9ca3af; }
+    .ops-grid { display: grid; gap: 1rem; margin-top: 1.5rem; }
+    @media (min-width: 768px) { .ops-grid { grid-template-columns: repeat(2, 1fr); } }
+    .op-card { 
+      background: var(--color-white); 
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      position: relative;
+    }
+    .op-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem; }
+    .op-title { font-size: 1.125rem; font-weight: 700; color: var(--color-primary); }
+    .op-meta { color: var(--color-text-light); font-size: 0.875rem; margin-top: 0.5rem; }
+    .btn-sm { padding: 0.375rem 0.75rem; font-size: 0.875rem; }
+    .login-screen { 
+      min-height: 100vh; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      padding: 2rem;
+    }
+    .login-card { 
+      background: var(--color-white); 
+      padding: 2.5rem; 
+      border-radius: 4px;
+      max-width: 400px;
+      width: 100%;
+      text-align: center;
+    }
+    .discord-btn { 
+      background: #5865F2; 
+      color: white;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+    }
+    .discord-btn:hover { background: #4752C4; }
+    .hidden { display: none !important; }
+    .empty-state { text-align: center; padding: 3rem; color: var(--color-text-light); }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+    .skeleton { 
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+      height: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+    .roster-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.875rem; }
+    .roster-table th, .roster-table td { padding: 0.75rem; text-align: left; border-bottom: 1px solid var(--color-border); }
+    .roster-table th { font-weight: 600; color: var(--color-text-light); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
+    .role-tag { 
+      display: inline-block; 
+      padding: 0.125rem 0.5rem; 
+      border-radius: 3px; 
+      font-size: 0.75rem; 
+      font-weight: 600;
+    }
+    .role-command { background: #7c3aed; color: white; }
+    .role-staff { background: #0369a1; color: white; }
+    .role-operator { background: var(--color-accent); color: white; }
+    .toast { 
+      position: fixed; 
+      bottom: 1rem; 
+      left: 50%; 
+      transform: translateX(-50%) translateY(100px);
+      background: var(--color-primary);
+      color: white;
+      padding: 0.875rem 1.5rem;
+      border-radius: 4px;
+      font-size: 0.875rem;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 1000;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    
+    /* Announcement styles */
+    .announcement-feed { margin-top: 1.5rem; }
+    .announcement-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 4px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    .announcement-card.pinned {
+      border-left: 4px solid var(--color-accent);
+    }
+    .announcement-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.75rem;
+    }
+    .announcement-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+    }
+    .announcement-meta {
+      flex: 1;
+    }
+    .announcement-author {
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+    .announcement-time {
+      font-size: 0.75rem;
+      color: var(--color-text-light);
+    }
+    .announcement-content {
+      line-height: 1.6;
+      color: var(--color-text);
+      white-space: pre-wrap;
+    }
+    .announcement-badge {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: var(--color-accent);
+      color: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 3px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .discord-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #5865F2;
+      text-decoration: none;
+      font-size: 0.875rem;
+      margin-top: 0.5rem;
+    }
+    .discord-link:hover {
+      text-decoration: underline;
+    }
+    .refresh-btn {
+      background: none;
+      border: none;
+      color: var(--color-text-light);
+      cursor: pointer;
+      font-size: 0.875rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .refresh-btn:hover {
+      color: var(--color-primary);
+    }
+    .spinning {
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div id="app" class="app-container">
+    <!-- Login Screen -->
+    <div id="loginView" class="login-screen">
+      <div class="login-card">
+        <h1 style="font-size: 1.5rem; margin-bottom: 0.5rem;">Special Air Service</h1>
+        <p style="color: var(--color-text-light); font-size: 0.875rem;">Command & Control System</p>
+        <p style="color: var(--color-text-light); margin: 1rem 0;">Authenticate with Discord to access unit systems.</p>
+        <button class="btn btn-primary discord-btn" onclick="auth.login()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          Login with Discord
+        </button>
+        <p style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--color-text-light);">Requires Discord account in SAS server</p>
+      </div>
+    </div>
+
+    <!-- Main App -->
+    <div id="mainApp" class="hidden">
+      <nav class="app-nav">
+        <div class="app-nav-container">
+          <div class="nav-tabs" id="navTabs">
+            <a href="#updates" class="nav-tab active" data-view="updates">Updates</a>
+            <a href="#announcements" class="nav-tab" data-view="announcements">Announcements</a>
+            <a href="#operations" class="nav-tab hidden" data-view="operations" data-role="staff">Operations</a>
+            <a href="#promotions" class="nav-tab hidden" data-view="promotions" data-role="command">Promotions</a>
+            <a href="./admin.html" class="nav-tab hidden" data-role="command">Admin</a>
+          </div>
+          <div class="user-pill" id="userPill">
+            <img src="" alt="" class="user-avatar" id="userAvatar">
+            <span id="userName">...</span>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Updates View -->
+      <div id="updates" class="view active">
+        <h2 class="section-title">Unit Updates</h2>
+        <div class="card">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <span class="status-badge status-operational" id="unitStatusBadge">● Checking...</span>
+            <span style="font-size: 0.875rem; color: var(--color-text-light);">Last updated: <span id="lastUpdated">--</span></span>
+          </div>
+          <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Current Status</h3>
+          <p class="lead" id="unitStatusText">Loading unit status...</p>
+        </div>
+        
+        <div class="card mt-2">
+          <h3 class="card-title">Quick Links</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
+            <a href="https://discord.gg/bzTGc9ew" target="_blank" class="discord-link" style="padding: 1rem; background: #f5f5f5; border-radius: 4px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#5865F2"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+              <span>Join Discord Server</span>
+            </a>
+            <a href="#" onclick="auth.openDiscordDM(); return false;" class="discord-link" style="padding: 1rem; background: #f5f5f5; border-radius: 4px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="#5865F2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+              <span>Open Discord App</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Announcements View -->
+      <div id="announcements" class="view">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2 class="section-title" style="margin: 0;">Announcements</h2>
+          <button class="refresh-btn" onclick="announcements.load(true)">
+            <svg id="refreshIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+            Refresh
+          </button>
+        </div>
+        
+        <div id="announcementLoading">
+          <div class="skeleton" style="height: 120px;"></div>
+          <div class="skeleton" style="height: 120px;"></div>
+        </div>
+        
+        <div class="announcement-feed hidden" id="announcementFeed">
+          <!-- Populated dynamically -->
+        </div>
+        
+        <div class="card hidden" id="announcementEmpty">
+          <div class="empty-state">
+            <div class="empty-state-icon">📢</div>
+            <p>No announcements yet</p>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem;">Check back later for updates</p>
+          </div>
+        </div>
+        
+        <div style="margin-top: 2rem; text-align: center;">
+          <a href="https://discord.com/channels/${CONFIG.guildId}" target="_blank" class="btn btn-primary" style="background: #5865F2;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 0.5rem;"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            View in Discord
+          </a>
+        </div>
+      </div>
+
+      <!-- Operations View (Staff+) -->
+      <div id="operations" class="view">
+        <h2 class="section-title">Active Operations</h2>
+        <div id="opsLoading">
+          <div class="skeleton" style="height: 120px;"></div>
+          <div class="skeleton" style="height: 120px;"></div>
+        </div>
+        <div class="ops-grid hidden" id="opsGrid">
+          <!-- Dynamically populated -->
+        </div>
+        <div class="card hidden" id="opsEmpty">
+          <div class="empty-state">
+            <div class="empty-state-icon">🎯</div>
+            <p>No active operations</p>
+            <p style="font-size: 0.875rem; margin-top: 0.5rem;">All squadrons are in training or standby</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promotions View (Command only) -->
+      <div id="promotions" class="view">
+        <h2 class="section-title">Promotions & Awards</h2>
+        <div class="card">
+          <h3 class="card-title">Submit Promotion</h3>
+          <form id="promoForm" style="margin-top: 1rem; display: grid; gap: 1rem;">
+            <div>
+              <label style="display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">Operator</label>
+              <select class="form-control" id="promoOperatorSelect" style="width: 100%; padding: 0.625rem; border: 1px solid var(--color-border); border-radius: 3px; font-family: inherit;">
+                <option value="">Loading personnel...</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">New Rank</label>
+              <select class="form-control" style="width: 100%; padding: 0.625rem; border: 1px solid var(--color-border); border-radius: 3px; font-family: inherit;">
+                <option value="">Select rank...</option>
+                <option>Private</option>
+                <option>Lance Corporal</option>
+                <option>Corporal</option>
+                <option>Sergeant</option>
+                <option>Staff Sergeant</option>
+                <option>Warrant Officer</option>
+                <option>Second Lieutenant</option>
+                <option>Lieutenant</option>
+                <option>Captain</option>
+                <option>Major</option>
+              </select>
+            </div>
+            <div>
+              <label style="display: block; font-size: 0.875rem; font-weight: 600; margin-bottom: 0.5rem; text-transform: uppercase;">Justification</label>
+              <textarea style="width: 100%; padding: 0.625rem; border: 1px solid var(--color-border); border-radius: 3px; font-family: inherit; min-height: 100px; resize: vertical;"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="justify-self: start;">Submit for Approval</button>
+          </form>
+        </div>
+
+        <div class="card mt-2">
+          <h3 class="card-title">Pending Approvals</h3>
+          <div id="pendingApprovals">
+            <div class="empty-state">
+              <div class="empty-state-icon">⏳</div>
+              <p>No pending approvals</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const CONFIG = {
+      clientId: 'YOUR_DISCORD_CLIENT_ID',
+      redirectUri: encodeURIComponent(window.location.origin + '/app/login.html'),
+      guildId: 'YOUR_GUILD_ID',
+      apiBase: 'https://your-worker.your-subdomain.workers.dev'
+    };
+
+    const auth = {
+      user: null,
+      token: null,
+
+      login() {
+        const url = `https://discord.com/oauth2/authorize?client_id=${CONFIG.clientId}&response_type=code&redirect_uri=${CONFIG.redirectUri}&scope=identify%20guilds.members.read&prompt=consent`;
+        window.location.href = url;
+      },
+
+      openDiscordDM() {
+        // Try to open Discord app, fallback to web
+        const discordUrl = `discord://-/channels/${CONFIG.guildId}`;
+        const webUrl = `https://discord.com/channels/${CONFIG.guildId}`;
+        
+        // Attempt to open app
+        window.location.href = discordUrl;
+        
+        // Fallback after short delay
+        setTimeout(() => {
+          window.location.href = webUrl;
+        }, 500);
+      },
+
+      async init() {
+        const stored = localStorage.getItem('sas_session');
+        if (stored) {
+          try {
+            const session = JSON.parse(stored);
+            if (session.expires > Date.now()) {
+              this.user = session.user;
+              this.token = session.token;
+              this.showApp();
+              return;
+            }
+          } catch (e) {
+            localStorage.removeItem('sas_session');
+          }
+        }
+        this.showLogin();
+      },
+
+      async handleCallback(code) {
+        try {
+          const res = await fetch(`${CONFIG.apiBase}/auth/callback`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ code, redirectUri: decodeURIComponent(CONFIG.redirectUri) })
+          });
+          
+          if (!res.ok) throw new Error('Auth failed');
+          
+          const data = await res.json();
+          
+          const memberRes = await fetch(`${CONFIG.apiBase}/auth/verify`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+              userId: data.id, 
+              accessToken: data.access_token 
+            })
+          });
+          
+          if (!memberRes.ok) throw new Error('Not a unit member');
+          
+          const memberData = await memberRes.json();
+          
+          this.user = {
+            id: data.id,
+            username: data.username,
+            avatar: data.avatar,
+            roles: memberData.roles || ['everyone']
+          };
+          
+          localStorage.setItem('sas_session', JSON.stringify({
+            user: this.user,
+            token: data.access_token,
+            expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
+          }));
+          
+          window.history.replaceState({}, document.title, './app.html');
+          this.showApp();
+          
+        } catch (err) {
+          console.error('Auth error:', err);
+          this.showLogin();
+          showToast('Authentication failed. Please try again.');
+        }
+      },
+
+      logout() {
+        localStorage.removeItem('sas_session');
+        this.user = null;
+        this.token = null;
+        this.showLogin();
+      },
+
+      showLogin() {
+        document.getElementById('loginView').classList.remove('hidden');
+        document.getElementById('mainApp').classList.add('hidden');
+      },
+
+      showApp() {
+        document.getElementById('loginView').classList.add('hidden');
+        document.getElementById('mainApp').classList.remove('hidden');
+        
+        document.getElementById('userName').textContent = this.user.username;
+        document.getElementById('userAvatar').src = this.user.avatar 
+          ? `https://cdn.discordapp.com/avatars/${this.user.id}/${this.user.avatar}.png`
+          : 'https://cdn.discordapp.com/embed/avatars/0.png';
+        
+        this.setupNavigation();
+        this.loadData();
+      },
+
+      setupNavigation() {
+        const roles = this.user.roles;
+        const isStaff = roles.includes('staff') || roles.includes('command');
+        const isCommand = roles.includes('command');
+        
+        document.querySelectorAll('[data-role]').forEach(tab => {
+          const requiredRole = tab.dataset.role;
+          if (requiredRole === 'command' && isCommand) {
+            tab.classList.remove('hidden');
+          } else if (requiredRole === 'staff' && isStaff) {
+            tab.classList.remove('hidden');
+          }
+        });
+        
+        document.querySelectorAll('.nav-tab[data-view]').forEach(tab => {
+          tab.addEventListener('click', (e) => {
+            e.preventDefault();
+            const viewId = tab.dataset.view;
+            this.switchView(viewId);
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
+          });
+        });
+      },
+
+      async loadData() {
+        this.loadUnitStatus();
+        announcements.load();
+        
+        if (this.user.roles.includes('staff') || this.user.roles.includes('command')) {
+          this.loadOperations();
+        }
+        
+        if (this.user.roles.includes('command')) {
+          this.loadPersonnel();
+        }
+      },
+
+      async loadUnitStatus() {
+        try {
+          const res = await fetch(`${CONFIG.apiBase}/unit/status`);
+          const data = await res.json();
+          
+          document.getElementById('unitStatusBadge').textContent = `● ${data.status}`;
+          document.getElementById('unitStatusBadge').className = `status-badge status-${data.status.toLowerCase().replace(' ', '-')}`;
+          document.getElementById('unitStatusText').textContent = data.message;
+          document.getElementById('lastUpdated').textContent = new Date(data.updatedAt).toLocaleTimeString();
+        } catch (err) {
+          document.getElementById('unitStatusBadge').textContent = '● Unknown';
+          document.getElementById('unitStatusBadge').className = 'status-badge status-none';
+          document.getElementById('unitStatusText').textContent = 'Unable to load unit status';
+        }
+      },
+
+      async loadOperations() {
+        try {
+          const res = await fetch(`${CONFIG.apiBase}/operations/active`, {
+            headers: { 'Authorization': `Bearer ${this.token}` }
+          });
+          
+          const ops = await res.json();
+          
+          document.getElementById('opsLoading').classList.add('hidden');
+          
+          if (ops.length === 0) {
+            document.getElementById('opsEmpty').classList.remove('hidden');
+            return;
+          }
+          
+          const grid = document.getElementById('opsGrid');
+          grid.innerHTML = '';
+          grid.classList.remove('hidden');
+          
+          ops.forEach(op => {
+            const card = document.createElement('div');
+            card.className = 'op-card';
+            card.innerHTML = `
+              <div class="op-header">
+                <div>
+                  <div class="op-title">OP: ${op.name}</div>
+                  <div class="op-meta">${op.squadron} | ${op.type}</div>
+                </div>
+                <span class="status-badge status-${op.status.toLowerCase()}">${op.status}</span>
+              </div>
+              <p style="font-size: 0.875rem; color: var(--color-text-light); margin-bottom: 1rem;">${op.description}</p>
+              <div style="display: flex; gap: 0.5rem;">
+                <button class="btn btn-primary btn-sm" onclick="viewOp('${op.id}')">Details</button>
+                ${op.status === 'Active' ? `<button class="btn btn-sm" style="background: var(--color-bg); color: var(--color-text);" onclick="standDown('${op.id}')">Stand Down</button>` : ''}
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+          
+          if (this.user.roles.includes('command')) {
+            const createCard = document.createElement('div');
+            createCard.className = 'op-card';
+            createCard.style.cssText = 'border-style: dashed; opacity: 0.7; cursor: pointer;';
+            createCard.onclick = () => window.location.href = './admin.html#operations';
+            createCard.innerHTML = `
+              <div style="text-align: center; padding: 2rem; color: var(--color-text-light);">
+                <div style="font-size: 2rem; margin-bottom: 0.5rem;">+</div>
+                <div style="font-weight: 600;">Create New Operation</div>
+              </div>
+            `;
+            grid.appendChild(createCard);
+          }
+          
+        } catch (err) {
+          document.getElementById('opsLoading').classList.add('hidden');
+          document.getElementById('opsEmpty').classList.remove('hidden');
+        }
+      },
+
+      async loadPersonnel() {
+        try {
+          const res = await fetch(`${CONFIG.apiBase}/personnel`, {
+            headers: { 'Authorization': `Bearer ${this.token}` }
+          });
+          
+          const personnel = await res.json();
+          
+          const select = document.getElementById('promoOperatorSelect');
+          select.innerHTML = '<option value="">Select operator...</option>';
+          
+          personnel.forEach(p => {
+            const option = document.createElement('option');
+            option.value = p.id;
+            option.textContent = `${p.rank} ${p.name}`;
+            select.appendChild(option);
+          });
+          
+        } catch (err) {
+          const select = document.getElementById('promoOperatorSelect');
+          select.innerHTML = '<option value="">Unable to load personnel</option>';
+        }
+      },
+
+      switchView(viewId) {
+        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+        document.getElementById(viewId).classList.add('active');
+      },
+
+      hasRole(role) {
+        return this.user?.roles?.includes(role) || false;
+      }
+    };
+
+    // Announcements module
+    const announcements = {
+      async load(force = false) {
+        const refreshIcon = document.getElementById('refreshIcon');
+        if (refreshIcon) refreshIcon.classList.add('spinning');
+        
+        try {
+          const res = await fetch(`${CONFIG.apiBase}/announcements?t=${Date.now()}`);
+          const data = await res.json();
+          
+          document.getElementById('announcementLoading').classList.add('hidden');
+          
+          const feed = document.getElementById('announcementFeed');
+          
+          if (!data.announcements || data.announcements.length === 0) {
+            document.getElementById('announcementEmpty').classList.remove('hidden');
+            feed.classList.add('hidden');
+            return;
+          }
+          
+          document.getElementById('announcementEmpty').classList.add('hidden');
+          feed.classList.remove('hidden');
+          
+          feed.innerHTML = data.announcements.map(a => this.renderAnnouncement(a)).join('');
+          
+        } catch (err) {
+          console.error('Failed to load announcements:', err);
+          document.getElementById('announcementLoading').classList.add('hidden');
+          document.getElementById('announcementEmpty').classList.remove('hidden');
+          showToast('Failed to load announcements');
+        } finally {
+          if (refreshIcon) refreshIcon.classList.remove('spinning');
+        }
+      },
+      
+      renderAnnouncement(a) {
+        const date = new Date(a.timestamp);
+        const timeStr = date.toLocaleDateString() + ' at ' + date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        const avatarUrl = a.avatar 
+          ? `https://cdn.discordapp.com/avatars/${a.authorId}/${a.avatar}.png`
+          : 'https://cdn.discordapp.com/embed/avatars/0.png';
+        
+        return `
+          <div class="announcement-card ${a.pinned ? 'pinned' : ''}">
+            ${a.pinned ? '<span class="announcement-badge">📌 PINNED</span>' : ''}
+            <div class="announcement-header">
+              <img src="${avatarUrl}" alt="" class="announcement-avatar">
+              <div class="announcement-meta">
+                <div class="announcement-author">${a.author}</div>
+                <div class="announcement-time">${timeStr}</div>
+              </div>
+            </div>
+            <div class="announcement-content">${this.escapeHtml(a.content)}</div>
+            ${a.attachments?.length ? `<div style="margin-top: 1rem;">${a.attachments.map(url => `<img src="${url}" style="max-width: 100%; border-radius: 4px;">`).join('')}</div>` : ''}
+          </div>
+        `;
+      },
+      
+      escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+    };
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    function viewOp(id) {
+      showToast(`Loading operation ${id}...`);
+    }
+
+    function standDown(id) {
+      if (confirm('Stand down this operation?')) {
+        showToast('Operation stood down');
+      }
+    }
+
+    // Auto-refresh announcements every 30 seconds when tab is visible
+    setInterval(() => {
+      if (!document.hidden && document.getElementById('announcements').classList.contains('active')) {
+        announcements.load();
+      }
+    }, 30000);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code');
+      const error = params.get('error');
+      
+      if (error) {
+        auth.showLogin();
+        showToast('Login cancelled or failed');
+      } else if (code) {
+        auth.handleCallback(code);
+      } else {
+        auth.init();
+      }
+    });
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js').catch(console.error);
+    }
+  </script>
+</body>
+</html>

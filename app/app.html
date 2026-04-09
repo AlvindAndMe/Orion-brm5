@@ -377,12 +377,14 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const CONFIG = {
-      clientId: 'YOUR_DISCORD_CLIENT_ID',
-      redirectUri: encodeURIComponent(window.location.origin + '/app/login.html'),
-      guildId: 'YOUR_GUILD_ID',
-      apiBase: 'https://your-worker.your-subdomain.workers.dev'
-    };
+const CONFIG = {
+  clientId: '1491725983131369552',
+  redirectUri: window.location.origin + '/app/login.html', // Not encoded here
+  guildId: '1479930085619404954', // Replace with actual guild ID
+  apiBase: window.location.origin + '/api' // Uses your Vercel API
+};// In login.html - use the SAME string as auth.js!
+const redirectUri = encodeURIComponent(window.location.origin + '/app/login.html');
+
 
     const auth = {
       user: null,
@@ -395,7 +397,7 @@
 
       openDiscordDM() {
         // Try to open Discord app, fallback to web
-        const discordUrl = `discord://-/channels/${CONFIG.guildId}`;
+        const discordUrl = `https://discord.com/oauth2/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=identify%20guilds.members.read&prompt=consent`;
         const webUrl = `https://discord.com/channels/${CONFIG.guildId}`;
         
         // Attempt to open app
@@ -426,52 +428,47 @@
       },
 
       async handleCallback(code) {
-        try {
-          const res = await fetch(`${CONFIG.apiBase}/auth/callback`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ code, redirectUri: decodeURIComponent(CONFIG.redirectUri) })
-          });
-          
-          if (!res.ok) throw new Error('Auth failed');
-          
-          const data = await res.json();
-          
-          const memberRes = await fetch(`${CONFIG.apiBase}/auth/verify`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              userId: data.id, 
-              accessToken: data.access_token 
-            })
-          });
-          
-          if (!memberRes.ok) throw new Error('Not a unit member');
-          
-          const memberData = await memberRes.json();
-          
-          this.user = {
-            id: data.id,
-            username: data.username,
-            avatar: data.avatar,
-            roles: memberData.roles || ['everyone']
-          };
-          
-          localStorage.setItem('sas_session', JSON.stringify({
-            user: this.user,
-            token: data.access_token,
-            expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
-          }));
-          
-          window.history.replaceState({}, document.title, './app.html');
-          this.showApp();
-          
-        } catch (err) {
-          console.error('Auth error:', err);
-          this.showLogin();
-          showToast('Authentication failed. Please try again.');
-        }
-      },
+  try {
+    // Remove code from URL immediately
+    window.history.replaceState({}, document.title, window.location.pathname);
+    
+    const res = await fetch(`${CONFIG.apiBase}/discord/callback`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ 
+        code: code, 
+        redirectUri: CONFIG.redirectUri 
+      })
+    });
+    
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Auth failed');
+    }
+    
+    const data = await res.json();
+    
+    // Store session
+    this.user = {
+      id: data.id,
+      username: data.username,
+      avatar: data.avatar,
+      roles: data.roles || ['member']
+    };
+    
+    localStorage.setItem('sas_session', JSON.stringify({
+      user: this.user,
+      expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
+    }));
+    
+    this.showApp();
+    
+  } catch (err) {
+    console.error('Auth error:', err);
+    this.showLogin();
+    showToast('Login failed: ' + err.message);
+  }
+},
 
       logout() {
         localStorage.removeItem('sas_session');

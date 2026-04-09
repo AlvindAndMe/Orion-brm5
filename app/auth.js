@@ -1,5 +1,3 @@
-// Add at the top of auth.js
-console.log('Path:', window.location.pathname, 'Code:', new URLSearchParams(window.location.search).get('code'));
 const AUTH_CONFIG = {
   discordClientId: '1491725983131369552',
   redirectUri: window.location.origin + '/app/login.html',
@@ -15,60 +13,76 @@ const ROLE_HIERARCHY = {
 class AuthManager {
   constructor() {
     this.user = null;
+    this.processing = false;
     this.init();
   }
 
   init() {
-  const urlParams = new URLSearchParams(window.location.search);
-  const code = urlParams.get('code');
-  
-  // Handle callback
-  if (code && window.location.pathname.includes('/app/login.html')) {
-    this.handleCallback(code);
-    return;
-  }
-  
-  // NEW: If already logged in, go to app
-  if (this.getSession() && window.location.pathname.includes('/app/login.html')) {
-    window.location.href = '/app/app.html';
-    return;
-  }
-  
-  this.checkSession();
+    const urlParams = new URLSearchParams(window.location.search);
+    const code = urlParams.get('code');
+    const error = urlParams.get('error');
     
-    if (code && window.location.pathname === '/app/login.html') {
-      this.handleCallback(code);
-    } else {
-      this.checkSession();
+    // Handle OAuth errors
+    if (error) {
+      console.error('OAuth error:', error);
+      this.showError('Login failed. Please try again.');
+      return;
     }
+    
+    // Handle OAuth callback
+    if (code && window.location.pathname.includes('/login.html')) {
+      // Remove code from URL immediately to prevent reuse on refresh
+      window.history.replaceState({}, document.title, window.location.pathname);
+      this.handleCallback(code);
+      return;
+    }
+    
+    // Normal session check
+    this.checkSession();
   }
 
   async handleCallback(code) {
+    if (this.processing) return;
+    this.processing = true;
+    
     try {
       const response = await fetch(`${AUTH_CONFIG.backendUrl}/api/discord/callback`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ code, redirectUri: AUTH_CONFIG.redirectUri })
+        body: JSON.stringify({ 
+          code: code, 
+          redirectUri: AUTH_CONFIG.redirectUri
+        })
       });
 
-      if (!response.ok) throw new Error('Auth failed');
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(errorData.error || `Server error: ${response.status}`);
+      }
 
       const data = await response.json();
+      
+      // Validate response data
+      if (!data.id || !data.username) {
+        throw new Error('Invalid response from server');
+      }
+      
       this.setSession(data);
       
-      // Clean URL and redirect
-      window.history.replaceState({}, document.title, '/app/app.html');
-      window.location.href = '/app/app.html';
+      // Redirect to main app
+      window.location.href = '/app.html';
+      
     } catch (err) {
       console.error('Auth error:', err);
-      this.showError('Authentication failed. Please try again.');
+      this.showError('Authentication failed: ' + err.message);
+      this.processing = false;
     }
   }
 
   setSession(data) {
     localStorage.setItem('sas_user', JSON.stringify({
       username: data.username,
-      roles: data.roles,
+      roles: data.roles || ['member'],
       avatar: data.avatar,
       id: data.id,
       expires: Date.now() + (24 * 60 * 60 * 1000) // 24h
@@ -79,12 +93,17 @@ class AuthManager {
     const stored = localStorage.getItem('sas_user');
     if (!stored) return null;
     
-    const user = JSON.parse(stored);
-    if (Date.now() > user.expires) {
+    try {
+      const user = JSON.parse(stored);
+      if (Date.now() > user.expires) {
+        this.clearSession();
+        return null;
+      }
+      return user;
+    } catch (e) {
       this.clearSession();
       return null;
     }
-    return user;
   }
 
   clearSession() {
@@ -94,15 +113,24 @@ class AuthManager {
 
   checkSession() {
     this.user = this.getSession();
+    
+    // If on login page but already logged in, go to app
+    if (this.user && window.location.pathname.includes('/login.html')) {
+      window.location.href = '/app.html';
+      return false;
+    }
+    
+    // If on protected page but not logged in, go to login
     if (!this.user && !this.isPublicPage()) {
       window.location.href = '/app/login.html';
       return false;
     }
+    
     return true;
   }
 
   isPublicPage() {
-    return window.location.pathname === '/app/login.html';
+    return window.location.pathname.includes('/login.html');
   }
 
   hasRole(minRole) {
@@ -129,13 +157,18 @@ class AuthManager {
     if (errorDiv) {
       errorDiv.textContent = msg;
       errorDiv.style.display = 'block';
+      setTimeout(() => {
+        errorDiv.style.display = 'none';
+      }, 5000);
+    } else {
+      alert(msg);
     }
   }
 
   updateUI() {
     if (!this.user) return;
 
-    // Update user menu
+    // Update user menu if exists
     const userMenu = document.getElementById('userMenu');
     const roleBadge = document.getElementById('roleBadge');
     
@@ -144,7 +177,14 @@ class AuthManager {
       const avatar = userMenu.querySelector('.user-avatar');
       const username = userMenu.querySelector('.username');
       
-      if (avatar) avatar.textContent = this.user.username.slice(0, 2).toUpperCase();
+      if (avatar) {
+        avatar.textContent = this.user.username.slice(0, 2).toUpperCase();
+        if (this.user.avatar) {
+          avatar.style.backgroundImage = `url(${this.user.avatar})`;
+          avatar.style.backgroundSize = 'cover';
+          avatar.textContent = '';
+        }
+      }
       if (username) username.textContent = this.user.username;
     }
 
@@ -154,14 +194,12 @@ class AuthManager {
       roleBadge.textContent = highest;
     }
 
-    // Lock/unlock nav items based on roles
     this.updateNavAccess();
   }
 
   updateNavAccess() {
-    // Operations: staff+
-    const opsLinks = document.querySelectorAll('[data-require="staff"]');
-    opsLinks.forEach(link => {
+    // Lock/unlock nav items based on roles
+    document.querySelectorAll('[data-require="staff"]').forEach(link => {
       if (!this.hasRole('staff')) {
         link.classList.add('nav-locked');
         link.href = '#';
@@ -172,9 +210,7 @@ class AuthManager {
       }
     });
 
-    // Promotions: command
-    const promoLinks = document.querySelectorAll('[data-require="command"]');
-    promoLinks.forEach(link => {
+    document.querySelectorAll('[data-require="command"]').forEach(link => {
       if (!this.hasRole('command')) {
         link.classList.add('nav-locked');
         link.href = '#';
@@ -189,22 +225,12 @@ class AuthManager {
   protectAdminPage() {
     if (!this.hasRole('command')) {
       document.body.innerHTML = `
-        <header class="header">
-          <div class="header-container">
-            <a href="/app/app.html" class="logo">SAS SOG</a>
-            <div class="user-menu" id="userMenu">
-              <button class="btn logout-btn" onclick="auth.logout()">Logout</button>
-            </div>
-          </div>
-        </header>
-        <main class="section">
-          <div class="access-denied">
-            <div class="access-denied-icon">⛔</div>
-            <h1 class="section-title">Access Denied</h1>
-            <p class="lead">This area is restricted to Command personnel only.</p>
-            <a href="/app/app.html" class="btn btn-primary mt-2">Return to Dashboard</a>
-          </div>
-        </main>
+        <div style="text-align: center; padding: 4rem; font-family: system-ui;">
+          <div style="font-size: 4rem; margin-bottom: 1rem;">⛔</div>
+          <h1>Access Denied</h1>
+          <p>Command personnel only.</p>
+          <a href="/app.html" style="color: #5865F2;">Return to Dashboard</a>
+        </div>
       `;
       return false;
     }

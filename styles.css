@@ -521,3 +521,160 @@ body {
   vertical-align: middle;
   z-index: 5;
 }
+
+/* Auth-specific additions */
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  padding: 2rem;
+}
+
+.auth-card {
+  background: var(--color-white);
+  padding: 3rem;
+  border-radius: 4px;
+  max-width: 400px;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+}
+
+.auth-logo {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1.5rem;
+  background: var(--color-primary);
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-white);
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.auth-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--color-primary);
+}
+
+.auth-subtitle {
+  color: var(--color-text-light);
+  margin-bottom: 2rem;
+  font-size: 0.9rem;
+}
+
+.discord-btn {
+  background-color: #5865F2;
+  color: var(--color-white);
+  width: 100%;
+  padding: 1rem;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+
+.discord-btn:hover {
+  background-color: #4752C4;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-white);
+}
+
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.logout-btn {
+  background: transparent;
+  color: rgba(255,255,255,0.7);
+  border: 1px solid rgba(255,255,255,0.3);
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+.logout-btn:hover {
+  color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+.access-denied {
+  text-align: center;
+  padding: 4rem 2rem;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.access-denied-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: var(--color-accent);
+}
+
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-left: 0.5rem;
+}
+
+.role-badge.command {
+  background: #dc2626;
+  color: white;
+}
+
+.role-badge.staff {
+  background: #2563eb;
+  color: white;
+}
+
+.role-badge.member {
+  background: var(--color-accent);
+  color: white;
+}
+
+.nav-locked {
+  opacity: 0.4;
+  pointer-events: none;
+  position: relative;
+}
+
+.nav-locked::after {
+  content: "🔒";
+  position: absolute;
+  right: -1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 720px) {
+  .user-menu .username {
+    display: none;
+  }
+}

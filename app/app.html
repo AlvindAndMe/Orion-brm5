@@ -2,56 +2,284 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SAS | Command</title>
+  <meta name="theme-color" content="#dc2626">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/icon-192.png">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, sans-serif; background: #0a0a0a; color: #fff; }
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0a0a0a; color: #fff; overflow-x: hidden; }
     .hidden { display: none !important; }
-    .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); }
-    .login-card { background: #1a1a1a; border: 1px solid #333; padding: 3rem; border-radius: 8px; text-align: center; max-width: 400px; width: 90%; }
-    .login-card h1 { font-size: 1.75rem; margin-bottom: 0.5rem; color: #dc2626; }
-    .login-card p { color: #888; margin-bottom: 2rem; }
-    .discord-btn { background: #5865F2; color: white; border: none; padding: 0.875rem 1.5rem; border-radius: 6px; font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; }
-    .discord-btn:hover { background: #4752C4; }
-    .app-nav { background: #141414; border-bottom: 1px solid #333; padding: 0 1rem; }
-    .app-nav-container { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
-    .nav-tabs { display: flex; gap: 0.25rem; }
-    .nav-tab { color: #888; text-decoration: none; padding: 0.5rem 1rem; font-size: 0.875rem; font-weight: 500; border-radius: 4px; transition: all 0.2s; cursor: pointer; }
-    .nav-tab:hover, .nav-tab.active { color: #fff; background: #1a1a1a; }
-    .user-pill { display: flex; align-items: center; gap: 0.75rem; background: #1a1a1a; padding: 0.375rem 0.875rem; border-radius: 20px; font-size: 0.875rem; }
+    
+    /* Mobile-first styles */
+    .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%); padding: 1rem; }
+    .login-card { background: #1a1a1a; border: 1px solid #333; padding: 2rem; border-radius: 8px; text-align: center; width: 100%; max-width: 400px; }
+    .login-card h1 { font-size: 1.5rem; margin-bottom: 0.5rem; color: #dc2626; }
+    .login-card p { color: #888; margin-bottom: 1.5rem; font-size: 0.875rem; }
+    .discord-btn { background: #5865F2; color: white; border: none; padding: 0.875rem 1.5rem; border-radius: 6px; font-size: 1rem; cursor: pointer; display: inline-flex; align-items: center; gap: 0.5rem; width: 100%; justify-content: center; }
+    
+    /* Header/Nav */
+    .app-header { 
+      background: #141414; 
+      border-bottom: 1px solid #333; 
+      position: sticky; 
+      top: 0; 
+      z-index: 100;
+      height: 60px;
+    }
+    .app-header-container { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 0 1rem; 
+      display: flex; 
+      align-items: center; 
+      justify-content: space-between; 
+      height: 100%;
+    }
+    .logo { font-weight: 700; color: #dc2626; font-size: 1.25rem; text-decoration: none; }
+    
+    /* Hamburger Button */
+    .hamburger {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      width: 24px;
+      height: 24px;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      z-index: 102;
+    }
+    .hamburger span {
+      width: 24px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s;
+      position: relative;
+      transform-origin: 1px;
+    }
+    .hamburger.active span:first-child { transform: rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:last-child { transform: rotate(-45deg); }
+    
+    /* Mobile Navigation Overlay */
+    .nav-overlay {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 99;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s;
+    }
+    .nav-overlay.active { opacity: 1; visibility: visible; }
+    
+    .nav-menu {
+      position: fixed;
+      top: 60px;
+      right: -100%;
+      width: 80%;
+      max-width: 300px;
+      height: calc(100vh - 60px);
+      background: #1a1a1a;
+      border-left: 1px solid #333;
+      z-index: 101;
+      transition: right 0.3s ease;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+    .nav-menu.active { right: 0; }
+    
+    .nav-item {
+      display: block;
+      padding: 1rem;
+      color: #888;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s;
+    }
+    .nav-item:hover, .nav-item.active {
+      background: #dc2626;
+      color: white;
+    }
+    
+    /* User pill in header */
+    .user-pill { 
+      display: flex; 
+      align-items: center; 
+      gap: 0.5rem; 
+      background: #0f0f0f; 
+      padding: 0.375rem 0.75rem; 
+      border-radius: 20px; 
+      font-size: 0.875rem;
+      border: 1px solid #333;
+    }
     .user-avatar { width: 28px; height: 28px; border-radius: 50%; }
-    .view { display: none; padding: 1.5rem; max-width: 1200px; margin: 0 auto; }
-    .view.active { display: block; }
-    .card { background: #141414; border: 1px solid #333; border-radius: 8px; padding: 1.5rem; margin-bottom: 1rem; }
-    .card-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 1rem; }
-    .status-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.875rem; font-weight: 600; }
+    .user-name { display: none; }
+    @media (min-width: 400px) { .user-name { display: block; } }
+    
+    /* Main content */
+    .view { display: none; padding: 1rem; max-width: 1200px; margin: 0 auto; min-height: calc(100vh - 60px); }
+    .view.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    
+    /* Cards */
+    .card { 
+      background: #141414; 
+      border: 1px solid #333; 
+      border-radius: 12px; 
+      padding: 1.25rem; 
+      margin-bottom: 1rem;
+    }
+    .card-title { font-size: 1.125rem; font-weight: 600; margin-bottom: 0.75rem; }
+    
+    /* Status badges */
+    .status-badge { 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.5rem; 
+      padding: 0.5rem 1rem; 
+      border-radius: 20px; 
+      font-size: 0.875rem; 
+      font-weight: 600; 
+    }
     .status-Operational { background: #064e3b; color: #34d399; }
     .status-Standby { background: #713f12; color: #fbbf24; }
     .status-StandDown { background: #7f1d1d; color: #f87171; }
-    .op-card { background: #0f0f0f; border: 1px solid #333; border-radius: 6px; padding: 1.25rem; margin-bottom: 1rem; }
-    .op-title { font-size: 1.125rem; font-weight: 600; }
-    .op-meta { color: #666; font-size: 0.875rem; }
-    .empty-state { text-align: center; padding: 3rem; color: #666; }
-    .toast { position: fixed; bottom: 1rem; right: 1rem; background: #dc2626; color: white; padding: 1rem 1.5rem; border-radius: 6px; transform: translateY(100px); opacity: 0; transition: all 0.3s; }
-    .toast.show { transform: translateY(0); opacity: 1; }
-    .announcement { background: #141414; border: 1px solid #333; border-radius: 6px; padding: 1.25rem; margin-bottom: 1rem; }
-    .announcement.pinned { border-left: 3px solid #dc2626; }
+    
+    /* Operation cards */
+    .op-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+    @media (min-width: 768px) { .op-grid { grid-template-columns: repeat(2, 1fr); } }
+    
+    .op-card { 
+      background: #0f0f0f; 
+      border: 1px solid #333; 
+      border-radius: 12px; 
+      padding: 1.25rem;
+      position: relative;
+    }
+    .op-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.75rem; }
+    .op-title { font-size: 1.125rem; font-weight: 600; color: #fff; }
+    .op-meta { color: #666; font-size: 0.875rem; margin-top: 0.25rem; }
+    .op-status { 
+      font-size: 0.75rem; 
+      text-transform: uppercase; 
+      padding: 0.25rem 0.75rem; 
+      border-radius: 12px; 
+      font-weight: 600; 
+    }
+    .op-status-active { background: #dc2626; color: white; }
+    .op-status-planning { background: #2563eb; color: white; }
+    .op-status-completed { background: #374151; color: #9ca3af; }
+    
+    /* Squadron cards */
+    .squadron-grid { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .squadron-grid { grid-template-columns: repeat(2, 1fr); } }
+    
+    .squadron-card { 
+      background: #141414; 
+      border: 1px solid #333; 
+      border-radius: 12px; 
+      padding: 1.25rem;
+      text-align: center;
+    }
+    .squadron-callsign { font-size: 2rem; font-weight: 800; color: #dc2626; margin-bottom: 0.5rem; }
+    
+    /* Announcements */
+    .announcement { 
+      background: #141414; 
+      border: 1px solid #333; 
+      border-radius: 12px; 
+      padding: 1.25rem; 
+      margin-bottom: 1rem;
+    }
+    .announcement.pinned { border-left: 4px solid #dc2626; }
     .announcement-header { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.75rem; }
     .announcement-avatar { width: 40px; height: 40px; border-radius: 50%; }
     .announcement-author { font-weight: 600; }
     .announcement-time { color: #666; font-size: 0.875rem; }
-    .announcement-content { color: #ccc; line-height: 1.6; }
-    .squadron-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 1rem; }
-    .squadron-card { background: #141414; border: 1px solid #333; border-radius: 6px; padding: 1rem; }
-    .squadron-callsign { font-size: 1.5rem; font-weight: 700; color: #dc2626; }
+    .announcement-content { color: #ccc; line-height: 1.6; word-wrap: break-word; }
+    
+    /* Pull to refresh indicator */
+    .refresh-indicator {
+      text-align: center;
+      padding: 1rem;
+      color: #666;
+      font-size: 0.875rem;
+      display: none;
+    }
+    .refresh-indicator.active { display: block; }
+    
+    /* Toast */
+    .toast { 
+      position: fixed; 
+      bottom: 1rem; 
+      left: 50%; 
+      transform: translateX(-50%) translateY(100px); 
+      background: #dc2626; 
+      color: white; 
+      padding: 1rem 1.5rem; 
+      border-radius: 8px; 
+      opacity: 0; 
+      transition: all 0.3s;
+      z-index: 1000;
+      max-width: 90%;
+      text-align: center;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    
+    /* Empty state */
+    .empty-state { text-align: center; padding: 3rem 1rem; color: #666; }
+    .empty-state-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.5; }
+    
+    /* Bottom nav for mobile (alternative to hamburger) */
+    @media (max-width: 768px) {
+      .bottom-nav {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #141414;
+        border-top: 1px solid #333;
+        display: flex;
+        justify-content: space-around;
+        padding: 0.5rem 0;
+        z-index: 100;
+      }
+      .bottom-nav-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.25rem;
+        color: #666;
+        text-decoration: none;
+        font-size: 0.75rem;
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+      }
+      .bottom-nav-item.active { color: #dc2626; }
+      .bottom-nav-item svg { width: 24px; height: 24px; }
+      .view { padding-bottom: 80px; } /* Space for bottom nav */
+    }
+    @media (min-width: 769px) {
+      .bottom-nav { display: none; }
+    }
   </style>
 </head>
 <body>
+  <!-- Login Screen -->
   <div id="loginView" class="login-screen">
     <div class="login-card">
-      <h1>SPECIAL AIR SERVICE</h1>
-      <p>Command & Control System</p>
+      <h1>SAS COMMAND</h1>
+      <p>Special Air Service Command & Control System</p>
       <button class="discord-btn" onclick="auth.login()">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
         Login with Discord
@@ -60,282 +288,391 @@
     </div>
   </div>
 
+  <!-- Main App -->
   <div id="mainApp" class="hidden">
-    <nav class="app-nav">
-      <div class="app-nav-container">
-        <div class="nav-tabs">
-          <a class="nav-tab active" onclick="app.switchView('dashboard')">Dashboard</a>
-          <a class="nav-tab" onclick="app.switchView('operations')">Operations</a>
-          <a class="nav-tab" onclick="app.switchView('squadrons')">Squadrons</a>
-          <a class="nav-tab" onclick="app.switchView('announcements')">Announcements</a>
-        </div>
-        <div class="user-pill">
-          <img src="" alt="" class="user-avatar" id="userAvatar">
-          <span id="userName">...</span>
+    <!-- Header with Hamburger -->
+    <header class="app-header">
+      <div class="app-header-container">
+        <a href="#" class="logo">SAS</a>
+        
+        <div style="display: flex; align-items: center; gap: 0.75rem;">
+          <div class="user-pill">
+            <img src="" alt="" class="user-avatar" id="userAvatar">
+            <span class="user-name" id="userName">...</span>
+          </div>
+          
+          <button class="hamburger" id="hamburger" onclick="app.toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
       </div>
+    </header>
+
+    <!-- Mobile Navigation Menu -->
+    <div class="nav-overlay" id="navOverlay" onclick="app.toggleMenu()"></div>
+    <nav class="nav-menu" id="navMenu">
+      <a href="#" class="nav-item active" onclick="app.switchView('dashboard')">Dashboard</a>
+      <a href="#" class="nav-item" onclick="app.switchView('operations')">Operations</a>
+      <a href="#" class="nav-item" onclick="app.switchView('squadrons')">Squadrons</a>
+      <a href="#" class="nav-item" onclick="app.switchView('announcements')">Announcements</a>
+      <hr style="border-color: #333; margin: 1rem 0;">
+      <a href="#" class="nav-item" onclick="auth.logout()" style="color: #dc2626;">Logout</a>
     </nav>
 
+    <!-- Views -->
     <div id="dashboard" class="view active">
       <div class="card">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.5rem;">
           <span id="unitStatusBadge" class="status-badge status-Operational">● Operational</span>
           <span style="color: #666; font-size: 0.875rem;">Updated: <span id="lastUpdated">--</span></span>
         </div>
         <h2 class="card-title">Unit Status</h2>
-        <p id="unitStatusText" style="color: #ccc;">Loading...</p>
+        <p id="unitStatusText" style="color: #ccc; line-height: 1.6;">Loading...</p>
       </div>
+
       <div class="card">
-        <h2 class="card-title">Active Operations</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h2 class="card-title" style="margin: 0;">Active Operations</h2>
+          <button onclick="app.loadOperations()" style="background: none; border: none; color: #666; font-size: 0.875rem;">
+            ↻ Refresh
+          </button>
+        </div>
         <div id="activeOpsList"><div class="empty-state">Loading...</div></div>
       </div>
     </div>
 
     <div id="operations" class="view">
-      <h2 style="margin-bottom: 1rem;">All Operations</h2>
-      <div id="allOpsList"></div>
+      <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">All Operations</h2>
+      <div class="refresh-indicator" id="opsRefresh">Pull down to refresh</div>
+      <div id="allOpsList" class="op-grid"></div>
     </div>
 
     <div id="squadrons" class="view">
-      <h2 style="margin-bottom: 1rem;">Squadrons</h2>
+      <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">Squadrons</h2>
       <div id="squadronsList" class="squadron-grid"></div>
     </div>
 
     <div id="announcements" class="view">
-      <h2 style="margin-bottom: 1rem;">Announcements</h2>
+      <h2 style="margin-bottom: 1rem; font-size: 1.25rem;">Announcements</h2>
       <div id="announcementsList"></div>
     </div>
+
+    <!-- Bottom Navigation (Mobile) -->
+    <nav class="bottom-nav">
+      <a href="#" class="bottom-nav-item active" onclick="app.switchView('dashboard')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+        Home
+      </a>
+      <a href="#" class="bottom-nav-item" onclick="app.switchView('operations')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0121 18.382V7.618a1 1 0 01-.553-.894L15 7m0 13V7m0 0L9.553 4.553A1 1 0 009 4.118v11.764c0 .37.214.704.553.894L15 7z"></path></svg>
+        Ops
+      </a>
+      <a href="#" class="bottom-nav-item" onclick="app.switchView('squadrons')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+        Squadrons
+      </a>
+      <a href="#" class="bottom-nav-item" onclick="app.switchView('announcements')">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
+        News
+      </a>
+    </nav>
   </div>
 
   <div class="toast" id="toast"></div>
 
-  <script>
-    // FIXED CONFIG - No more broken comments
-    const CONFIG = {
-      clientId: '1491725983131369552',
-      redirectUri: window.location.origin + '/app/app.html', // Changed to app.html
-      apiBase: window.location.origin + '/api'
-    };
+ <script>
+const CONFIG = {
+  clientId: '1491725983131369552',
+  redirectUri: window.location.origin + '/app.html',
+  apiBase: window.location.origin + '/api'
+};
 
-    const auth = {
-      user: null,
+const auth = {
+  user: null,
 
-      login() {
-        const encoded = encodeURIComponent(CONFIG.redirectUri);
-        window.location.href = `https://discord.com/oauth2/authorize?client_id=${CONFIG.clientId}&response_type=code&redirect_uri=${encoded}&scope=identify%20guilds.members.read&prompt=consent`;
-      },
+  login() {
+    const encoded = encodeURIComponent(CONFIG.redirectUri);
+    window.location.href =
+      `https://discord.com/oauth2/authorize?client_id=${CONFIG.clientId}&response_type=code&redirect_uri=${encoded}&scope=identify%20guilds.members.read&prompt=consent`;
+  },
 
-      async init() {
-        // Check for OAuth callback FIRST
-        const params = new URLSearchParams(window.location.search);
-        const code = params.get('code');
-        const error = params.get('error');
+  async handleCallback(code) {
+    try {
+      showToast('Logging in...');
 
-        if (error) {
-          showToast('Login cancelled');
-          document.getElementById('loginView').classList.remove('hidden');
-          return;
-        }
+      const res = await fetch(`${CONFIG.apiBase}/discord/callback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, redirectUri: CONFIG.redirectUri })
+      });
 
-        if (code) {
-          // Remove code from URL immediately
-          window.history.replaceState({}, document.title, window.location.pathname);
-          await this.handleCallback(code);
-          return;
-        }
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || 'Auth failed');
+      }
 
-        // Then check existing session
-        const stored = localStorage.getItem('sas_session');
-        if (stored) {
-          try {
-            const session = JSON.parse(stored);
-            if (session.expires > Date.now()) {
-              this.user = session.user;
-              app.init();
-              return;
-            } else {
-              localStorage.removeItem('sas_session');
-            }
-          } catch (e) {
-            localStorage.removeItem('sas_session');
-          }
-        }
+      const data = await res.json();
 
-        // Show login if nothing else
+      // Check if approved personnel
+      const checkRes = await fetch(`${CONFIG.apiBase}/auth/check?userId=${data.id}`);
+      const checkData = await checkRes.json();
+
+      if (!checkData.approved) {
+        showToast('Access denied. Apply via Discord first.');
         document.getElementById('loginView').classList.remove('hidden');
-      },
-
-      async handleCallback(code) {
-        try {
-          showToast('Logging in...');
-          
-          const res = await fetch(`${CONFIG.apiBase}/discord/callback`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              code: code, 
-              redirectUri: CONFIG.redirectUri 
-            })
-          });
-          
-          if (!res.ok) {
-            const err = await res.json();
-            throw new Error(err.error || 'Auth failed');
-          }
-          
-          const data = await res.json();
-          
-          // Check if approved personnel
-          const checkRes = await fetch(`${CONFIG.apiBase}/auth/check?userId=${data.id}`);
-          const checkData = await checkRes.json();
-          
-          if (!checkData.approved) {
-            showToast('Access denied. Apply via Discord first.');
-            document.getElementById('loginView').classList.remove('hidden');
-            return;
-          }
-          
-          this.user = {
-            id: data.id,
-            username: data.username,
-            nickname: data.nickname || data.username,
-            avatar: data.avatar,
-            isAdmin: checkData.isAdmin,
-            rank: checkData.rank,
-            squadron: checkData.squadron
-          };
-          
-          localStorage.setItem('sas_session', JSON.stringify({
-            user: this.user,
-            expires: Date.now() + (7 * 24 * 60 * 60 * 1000)
-          }));
-          
-          app.init();
-          
-        } catch (err) {
-          console.error(err);
-          showToast('Login failed: ' + err.message);
-          document.getElementById('loginView').classList.remove('hidden');
-        }
-      },
-
-      logout() {
-        localStorage.removeItem('sas_session');
-        window.location.reload();
+        return;
       }
-    };
 
-    const app = {
-      init() {
-        document.getElementById('loginView').classList.add('hidden');
-        document.getElementById('mainApp').classList.remove('hidden');
-        
-        const displayName = auth.user.nickname || auth.user.username;
-        document.getElementById('userName').textContent = `${auth.user.rank || 'Member'} ${displayName}`;
-        document.getElementById('userAvatar').src = auth.user.avatar 
-          ? `https://cdn.discordapp.com/avatars/${auth.user.id}/${auth.user.avatar}.png`
-          : 'https://cdn.discordapp.com/embed/avatars/0.png';
+      this.user = {
+        id: data.id,
+        username: data.username,
+        nickname: data.nickname || data.username,
+        avatar: data.avatar,
+        isAdmin: checkData.isAdmin,
+        rank: checkData.rank,
+        squadron: checkData.squadron
+      };
 
-        this.loadUnitStatus();
-        this.loadOperations();
-        this.loadSquadrons();
-        this.loadAnnouncements();
-      },
+      localStorage.setItem(
+        'sas_session',
+        JSON.stringify({
+          user: this.user,
+          expires: Date.now() + 7 * 24 * 60 * 60 * 1000
+        })
+      );
 
-      switchView(viewId) {
-        document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-        document.getElementById(viewId).classList.add('active');
-        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-        event.target.classList.add('active');
-      },
+      app.init();
+    } catch (err) {
+      console.error(err);
+      showToast('Login failed: ' + err.message);
+      document.getElementById('loginView').classList.remove('hidden');
+    }
+  },
 
-      async loadUnitStatus() {
-        try {
-          const res = await fetch(`${CONFIG.apiBase}/unit/status`);
-          const data = await res.json();
-          const statusClass = data.status.replace(' ', '');
-          document.getElementById('unitStatusBadge').className = `status-badge status-${statusClass}`;
-          document.getElementById('unitStatusBadge').textContent = `● ${data.status}`;
-          document.getElementById('unitStatusText').textContent = data.message;
-          document.getElementById('lastUpdated').textContent = new Date(data.updatedAt).toLocaleString();
-        } catch (err) {
-          document.getElementById('unitStatusText').textContent = 'Failed to load status';
-        }
-      },
+  logout() {
+    localStorage.removeItem('sas_session');
+    window.location.reload();
+  },
 
-      async loadOperations() {
-        try {
-          const res = await fetch(`${CONFIG.apiBase}/operations/active`);
-          const ops = await res.json();
-          
-          const html = ops.length ? ops.map(op => `
-            <div class="op-card">
-              <div style="display: flex; justify-content: space-between; align-items: start;">
-                <div>
-                  <div class="op-title">${op.name}</div>
-                  <div class="op-meta">${op.squadron_callsign || 'N/A'} • ${op.type} • ${op.status}</div>
-                </div>
-              </div>
-              <p style="color: #888; margin-top: 0.5rem;">${op.description}</p>
-            </div>
-          `).join('') : '<div class="empty-state">No active operations</div>';
-          
-          document.getElementById('activeOpsList').innerHTML = html;
-          document.getElementById('allOpsList').innerHTML = html;
-        } catch (err) {
-          document.getElementById('activeOpsList').innerHTML = '<div class="empty-state">Error loading operations</div>';
-        }
-      },
+  async init() {
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const error = params.get('error');
 
-      async loadSquadrons() {
-        try {
-          const res = await fetch(`${CONFIG.apiBase}/squadrons`);
-          const squadrons = await res.json();
-          
-          document.getElementById('squadronsList').innerHTML = squadrons.map(sq => `
-            <div class="squadron-card">
-              <div class="squadron-callsign">${sq.callsign}</div>
-              <div style="font-size: 1.125rem; margin-bottom: 0.5rem;">${sq.name}</div>
-              <div style="color: #666; font-size: 0.875rem;">Leader: ${sq.leader_name || 'None'}</div>
-            </div>
-          `).join('');
-        } catch (err) {
-          document.getElementById('squadronsList').innerHTML = '<div class="empty-state">Error loading squadrons</div>';
-        }
-      },
-
-      async loadAnnouncements() {
-        try {
-          const res = await fetch(`${CONFIG.apiBase}/announcements`);
-          const data = await res.json();
-          
-          document.getElementById('announcementsList').innerHTML = data.announcements.map(a => `
-            <div class="announcement ${a.pinned ? 'pinned' : ''}">
-              <div class="announcement-header">
-                <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="announcement-avatar">
-                <div>
-                  <div class="announcement-author">${a.author_name}</div>
-                  <div class="announcement-time">${new Date(a.created_at).toLocaleString()}</div>
-                </div>
-              </div>
-              <div class="announcement-content">${a.content}</div>
-            </div>
-          `).join('');
-        } catch (err) {
-          document.getElementById('announcementsList').innerHTML = '<div class="empty-state">Error loading announcements</div>';
-        }
-      }
-    };
-
-    function showToast(msg) {
-      const toast = document.getElementById('toast');
-      toast.textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
+    if (error) {
+      showToast('Login cancelled');
+      document.getElementById('loginView').classList.remove('hidden');
+      return;
     }
 
-    // Start
-    auth.init();
-  </script>
+    if (code) {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      await this.handleCallback(code);
+      return;
+    }
+
+    const stored = localStorage.getItem('sas_session');
+    if (stored) {
+      try {
+        const session = JSON.parse(stored);
+        if (session.expires > Date.now()) {
+          this.user = session.user;
+          app.init();
+          return;
+        }
+      } catch (_) {}
+
+      localStorage.removeItem('sas_session');
+    }
+
+    document.getElementById('loginView').classList.remove('hidden');
+  }
+};
+
+const app = {
+  menuOpen: false,
+
+  init() {
+    document.getElementById('loginView').classList.add('hidden');
+    document.getElementById('mainApp').classList.remove('hidden');
+
+    const displayName = auth.user.nickname || auth.user.username;
+    document.getElementById('userName').textContent = displayName;
+
+    document.getElementById('userAvatar').src =
+      auth.user.avatar
+        ? `https://cdn.discordapp.com/avatars/${auth.user.id}/${auth.user.avatar}.png`
+        : 'https://cdn.discordapp.com/embed/avatars/0.png';
+
+    this.loadUnitStatus();
+    this.loadOperations();
+    this.loadSquadrons();
+    this.loadAnnouncements();
+    this.initPullToRefresh();
+  },
+
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
+    document.getElementById('hamburger').classList.toggle('active', this.menuOpen);
+    document.getElementById('navMenu').classList.toggle('active', this.menuOpen);
+    document.getElementById('navOverlay').classList.toggle('active', this.menuOpen);
+    document.body.style.overflow = this.menuOpen ? 'hidden' : '';
+  },
+
+  switchView(viewId) {
+    if (this.menuOpen) this.toggleMenu();
+
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.querySelectorAll('.bottom-nav-item').forEach(n => n.classList.remove('active'));
+
+    document.getElementById(viewId).classList.add('active');
+
+    const navItems = document.querySelectorAll(
+      `.nav-item[onclick*="${viewId}"], .bottom-nav-item[onclick*="${viewId}"]`
+    );
+    navItems.forEach(item => item.classList.add('active'));
+
+    window.scrollTo(0, 0);
+  },
+
+  initPullToRefresh() {
+    let start = 0;
+
+    document.addEventListener('touchstart', e => {
+      start = e.changedTouches[0].screenY;
+    });
+
+    document.addEventListener('touchend', e => {
+      const end = e.changedTouches[0].screenY;
+      if (end > start + 100 && window.scrollY === 0) {
+        showToast('Refreshing...');
+        this.loadUnitStatus();
+        this.loadOperations();
+      }
+    });
+  },
+
+  async loadUnitStatus() {
+    try {
+      const res = await fetch(`${CONFIG.apiBase}/unit/status`);
+      const data = await res.json();
+
+      const statusClass = data.status.replace(' ', '');
+      const badge = document.getElementById('unitStatusBadge');
+
+      badge.className = `status-badge status-${statusClass}`;
+      badge.textContent = `● ${data.status}`;
+
+      document.getElementById('unitStatusText').textContent = data.message;
+      document.getElementById('lastUpdated').textContent =
+        new Date(data.updatedAt).toLocaleString();
+    } catch {
+      document.getElementById('unitStatusText').textContent = 'Failed to load status';
+    }
+  },
+
+  async loadOperations() {
+    try {
+      const res = await fetch(`${CONFIG.apiBase}/operations/active`);
+      const ops = await res.json();
+
+      const formatOp = op => `
+        <div class="op-card">
+          <div class="op-header">
+            <div>
+              <div class="op-title">${op.name}</div>
+              <div class="op-meta">${op.squadron_callsign || 'N/A'} • ${op.type}</div>
+            </div>
+            <span class="op-status op-status-${op.status.toLowerCase()}">${op.status}</span>
+          </div>
+          <p style="color:#888;margin-top:.5rem;font-size:.875rem;">
+            ${op.description || 'No description'}
+          </p>
+        </div>
+      `;
+
+      const html = ops.length
+        ? ops.map(formatOp).join('')
+        : '<div class="empty-state">No operations</div>';
+
+      document.getElementById('activeOpsList').innerHTML = html;
+      document.getElementById('allOpsList').innerHTML = html;
+    } catch {
+      document.getElementById('activeOpsList').innerHTML =
+        '<div class="empty-state">Error loading</div>';
+    }
+  },
+
+  async loadSquadrons() {
+    try {
+      const res = await fetch(`${CONFIG.apiBase}/squadrons`);
+      const squadrons = await res.json();
+
+      const html = squadrons.length
+        ? squadrons
+            .map(
+              sq => `
+          <div class="squadron-card">
+            <div class="squadron-callsign">${sq.callsign}</div>
+            <div style="font-size:1.125rem;margin-bottom:.5rem;">${sq.name}</div>
+            <div style="color:#666;font-size:.875rem;">Leader: ${sq.leader_name || 'None'}</div>
+          </div>
+        `
+            )
+            .join('')
+        : '<div class="empty-state">No squadrons</div>';
+
+      document.getElementById('squadronsList').innerHTML = html;
+    } catch {
+      document.getElementById('squadronsList').innerHTML =
+        '<div class="empty-state">Error loading</div>';
+    }
+  },
+
+  async loadAnnouncements() {
+    try {
+      const res = await fetch(`${CONFIG.apiBase}/announcements`);
+      const data = await res.json();
+
+      const html = data.announcements?.length
+        ? data.announcements
+            .map(
+              a => `
+          <div class="announcement ${a.pinned ? 'pinned' : ''}">
+            <div class="announcement-header">
+              <img src="https://cdn.discordapp.com/embed/avatars/0.png" class="announcement-avatar">
+              <div>
+                <div class="announcement-author">${a.author_name}</div>
+                <div class="announcement-time">${new Date(a.created_at).toLocaleString()}</div>
+              </div>
+            </div>
+            <div class="announcement-content">${a.content}</div>
+          </div>
+        `
+            )
+            .join('')
+        : '<div class="empty-state">No announcements</div>';
+
+      document.getElementById('announcementsList').innerHTML = html;
+    } catch {
+      document.getElementById('announcementsList').innerHTML =
+        '<div class="empty-state">Error loading</div>';
+    }
+  }
+};
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
+
+auth.init();
+</script>
+
 </body>
 </html>

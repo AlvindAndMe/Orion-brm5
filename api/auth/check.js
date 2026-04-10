@@ -6,26 +6,54 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   
   const { userId } = req.query;
-  if (!userId) return res.status(400).json({ error: 'Missing userId' });
+  
+  // DEBUG: Log what we received
+  console.log('Checking userId:', userId);
+  console.log('Env vars present:', !!process.env.SUPABASE_URL, !!process.env.SUPABASE_SERVICE_KEY);
+  
+  if (!userId) {
+    return res.status(400).json({ error: 'Missing userId', received: req.query });
+  }
 
   try {
-    const { data } = await supabase
+    // DEBUG: Try simple select first
+    const { data, error } = await supabase
       .from('personnel')
-      .select('is_admin, rank, squadron_id, squadrons(callsign)')
+      .select('*')  // Select all columns for debugging
       .eq('discord_id', userId)
       .single();
-
+    
+    // DEBUG: Log the result
+    console.log('Supabase result:', { data, error });
+    
+    if (error) {
+      console.error('Supabase error:', error);
+      return res.status(500).json({ error: error.message, userId });
+    }
+    
     if (!data) {
-      return res.json({ approved: false });
+      // DEBUG: Try to find any user with similar ID
+      const { data: allUsers } = await supabase
+        .from('personnel')
+        .select('discord_id')
+        .limit(5);
+      
+      return res.json({ 
+        approved: false, 
+        searchedFor: userId,
+        sampleIdsInDb: allUsers?.map(u => u.discord_id) || []
+      });
     }
 
     return res.json({
       approved: true,
       isAdmin: data.is_admin,
       rank: data.rank,
-      squadron: data.squadrons?.callsign || null
+      discord_id: data.discord_id
     });
+    
   } catch (err) {
+    console.error('Catch error:', err);
     return res.status(500).json({ error: err.message });
   }
 }

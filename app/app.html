@@ -674,6 +674,42 @@ function showToast(msg) {
   setTimeout(() => toast.classList.remove('show'), 3000);
 }
 
+async function subscribeToPush(reg) {
+  try {
+    const sub = await reg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: "BHv0ytkVVUofwPHQEmdrEvveDIule_Htpm9diVcjPJ6qg4jzWOCFFkYQo_0gPR276XZvM4qGTnwIWfzSd8V8qLU"
+    });
+
+    await fetch("/api/push/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(sub)
+    });
+
+    console.log("Push subscribed");
+  } catch (err) {
+    console.error("Push subscription failed", err);
+  }
+}
+
+document.addEventListener("DOMContentLoaded", async () => {
+  if (!("serviceWorker" in navigator)) return;
+
+  const reg = await navigator.serviceWorker.register("/app/sw.js");
+  console.log("SW registered");
+
+  if (Notification.permission === "granted") {
+    subscribeToPush(reg);
+  } else if (Notification.permission !== "denied") {
+    const permission = await Notification.requestPermission();
+    if (permission === "granted") {
+      subscribeToPush(reg);
+    }
+  }
+});
+
+
 auth.init();
 </script>
 

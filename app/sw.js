@@ -6,7 +6,7 @@ const CACHE_NAME = 'sas-v1';
 const STATIC_ASSETS = [
   '/app.html',
   '/login.html',
-  '/styles.css',
+  '../styles.css',
   '../icons/icon-192.png',
   '../icons/icon-512.png',
   '../icons/maskable-icon-512.png'
@@ -75,8 +75,8 @@ self.addEventListener('push', event => {
   const title = data.title || 'Update';
   const options = {
     body: data.body || '',
-    icon: '/icons/icon-192.png',
-    badge: '/icons/icon-192.png',
+    icon: '../icons/icon-192.png',
+    badge: '../icons/icon-192.png',
     data: {
       url: data.url || '/app.html'
     }
